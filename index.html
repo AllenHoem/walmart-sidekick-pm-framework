@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Interactive strategy framework for MyWalmart / Sidekick — three pre-built 90-day strategic plans, a Signal Engine explorer, and a builder for new alternatives across proactive, reactive, and conversational experiences.">
+<title>Sidekick Strategy Studio — First 90 Days Framework</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="header-inner">
+    <a class="brand" href="#/overview">
+      <span class="brand-spark" aria-hidden="true">✦</span>
+      <span class="brand-text">
+        <strong>Sidekick Strategy Studio</strong>
+        <small>First 90 Days · MyWalmart / Sidekick</small>
+      </span>
+    </a>
+    <nav class="site-nav" aria-label="Primary">
+      <a href="#/overview" data-route="overview">Overview</a>
+      <a href="#/plans" data-route="plans">Strategies</a>
+      <a href="#/engine" data-route="engine">Signal Engine</a>
+      <a href="#/builder" data-route="builder">Builder</a>
+      <a href="#/coverage" data-route="coverage">Coverage</a>
+    </nav>
+    <button id="theme-toggle" class="theme-toggle" type="button" aria-label="Toggle dark mode" title="Toggle light / dark">
+      <span class="theme-icon" aria-hidden="true">◐</span>
+    </button>
+  </div>
+</header>
+
+<main id="app" tabindex="-1">
+  <!-- ===================== OVERVIEW ===================== -->
+  <section id="view-overview" class="view" hidden>
+    <div class="hero">
+      <p class="eyebrow">A Principal PM operating framework · Allen Hoem</p>
+      <h1>Every plan starts with evidence.<br>The framework picks the bet.</h1>
+      <p class="hero-sub">
+        Three pre-built 90-day strategies for MyWalmart / Sidekick — plus a builder to create your own.
+        Every strategy is expressed in the same three experience modes, so plans stay comparable
+        and the roadmap stays evidence-driven.
+      </p>
+      <div class="mode-legend" role="list" aria-label="The three experience modes">
+        <div class="mode-pill mode-proactive" role="listitem">
+          <span class="mode-dot" aria-hidden="true"></span>
+          <div><strong>Proactive</strong><small>The system acts first — nudges, alerts, predictions, interventions</small></div>
+        </div>
+        <div class="mode-pill mode-reactive" role="listitem">
+          <span class="mode-dot" aria-hidden="true"></span>
+          <div><strong>Reactive intelligence</strong><small>Insights on demand — scores, dashboards, funnels, opportunity ranking</small></div>
+        </div>
+        <div class="mode-pill mode-conversational" role="listitem">
+          <span class="mode-dot" aria-hidden="true"></span>
+          <div><strong>Conversational</strong><small>Sidekick dialogue — grounded answers and agentic action loops</small></div>
+        </div>
+      </div>
+      <div class="hero-actions">
+        <a class="btn btn-primary" href="#/plans">Explore the three strategies</a>
+        <a class="btn btn-ghost" href="#/builder">Build your own</a>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>The shared foundation — Weeks 1–2 discovery sprint</h2>
+      <p class="section-sub">Regardless of which plan runs, the first two weeks are identical. Click each step for the detail and the question it answers.</p>
+      <div id="discovery-track" class="discovery-track"></div>
+      <aside class="callout">
+        <strong>Why this order matters:</strong> associate turnover is the burning problem, and retail attrition
+        concentrates brutally in the first 90 days of employment. The discovery sprint answers one question with
+        evidence: <em>what role does the app actually play in whether a new associate stays?</em>
+      </aside>
+    </div>
+
+    <div class="section">
+      <h2>Three bets, one strategy</h2>
+      <p class="section-sub">
+        The plans aren't mutually exclusive — they're sequenced differently. The honest recommendation is
+        <strong>A → C with B woven through</strong>: Plan A delivers a visible retention win in one quarter and is itself
+        the first use case of the Signal Engine; Plan C is where it compounds; Plan B's action agents become the
+        interventions the engine deploys.
+      </p>
+      <div id="overview-plan-cards" class="plan-grid"></div>
+    </div>
+
+    <div class="section">
+      <h2>Grounding facts</h2>
+      <div class="facts-grid">
+        <div class="fact"><strong>~1.9M</strong><span>global associates</span></div>
+        <div class="fact"><strong>~3M</strong><span>Sidekick questions / day</span></div>
+        <div class="fact"><strong>310K</strong><span>associates promoted in two years</span></div>
+        <div class="fact"><strong>50+</strong><span>Live Better U certificates, no cost</span></div>
+        <div class="fact"><strong>$1B</strong><span>training investment by 2026</span></div>
+        <div class="fact"><strong>90→30 min</strong><span>shift planning already cut by agents</span></div>
+      </div>
+      <p class="footnote">Four-super-agent architecture (Sparky, Marty, Associate, Developer) with nano-agents · “surgical” agent philosophy (CTO Hari Vasudev) · 5-year average US associate tenure.</p>
+    </div>
+  </section>
+
+  <!-- ===================== STRATEGIES ===================== -->
+  <section id="view-plans" class="view" hidden>
+    <div class="view-head">
+      <h1>Strategic plans</h1>
+      <p class="section-sub">
+        Three pre-built bets, each earned from the same discovery sprint — plus any alternatives you build.
+        Every plan declares its coverage across the three experience modes.
+      </p>
+    </div>
+    <div id="plan-grid" class="plan-grid"></div>
+    <div class="add-plan-strip">
+      <a class="btn btn-primary" href="#/builder">＋ Build a new alternative</a>
+    </div>
+  </section>
+
+  <!-- ===================== PLAN DETAIL ===================== -->
+  <section id="view-plan-detail" class="view" hidden></section>
+
+  <!-- ===================== SIGNAL ENGINE ===================== -->
+  <section id="view-engine" class="view" hidden>
+    <div class="view-head">
+      <h1>The Signal Engine</h1>
+      <p class="section-sub">
+        The signals-to-roadmap framework that makes the plans comparable and the roadmap evidence-driven.
+        Five layers — from raw data to a ranked roadmap.
+      </p>
+    </div>
+
+    <div class="engine-layers" id="engine-layer-nav" role="tablist" aria-label="Signal Engine layers"></div>
+
+    <div class="section" id="layer-1">
+      <h2><span class="layer-chip">Layer 1</span> Data inputs</h2>
+      <p class="section-sub">Competitive and external data answer a question telemetry can't: “is our attrition an app problem or a market problem in this region?”</p>
+      <div class="table-wrap">
+        <table class="data-table" id="inputs-table">
+          <thead><tr><th>Input</th><th>Examples</th><th>Cadence</th></tr></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="section" id="layer-2">
+      <h2><span class="layer-chip">Layer 2 → 3</span> Cohort scores → interventions <span class="interactive-tag">interactive</span></h2>
+      <p class="section-sub">
+        Scores are computed per <strong>cohort</strong> (role × shift × region × tenure band), never per individual —
+        statistically saner, and the right privacy posture. Move the sliders to simulate a cohort’s state and watch
+        the decision layer select intervention families.
+      </p>
+      <div class="simulator">
+        <div class="sim-controls">
+          <div class="sim-cohort">
+            <label for="sim-tenure">Cohort tenure band</label>
+            <select id="sim-tenure">
+              <option value="new">&lt; 90 days (new hire)</option>
+              <option value="mid">90 days – 1 year</option>
+              <option value="tenured">1 year +</option>
+            </select>
+          </div>
+          <div id="sim-sliders"></div>
+          <div class="sim-presets">
+            <span class="presets-label">Presets:</span>
+            <button class="chip-btn" data-preset="struggling">Struggling new hire</button>
+            <button class="chip-btn" data-preset="friction">High-friction cohort</button>
+            <button class="chip-btn" data-preset="rising">Rising star</button>
+            <button class="chip-btn" data-preset="skeptical">Sidekick skeptic</button>
+            <button class="chip-btn" data-preset="healthy">Healthy baseline</button>
+          </div>
+        </div>
+        <div class="sim-output">
+          <h3 class="sim-output-title">Decision layer output</h3>
+          <div id="sim-interventions"></div>
+          <p class="footnote" id="sim-empty" hidden>No thresholds tripped — this cohort reads healthy. The engine stays quiet: interventions compete for a scarce attention budget.</p>
+        </div>
+      </div>
+      <aside class="callout callout-warn">
+        <strong>Incentive compliance guardrail:</strong> gift cards to employees are taxable wages, incentive fairness
+        across protected classes must be auditable, and reward mechanics must never read as pay-for-surveillance.
+        Every incentive arm ships with an HR/legal review and an equity audit.
+      </aside>
+    </div>
+
+    <div class="section" id="layer-4">
+      <h2><span class="layer-chip">Layer 4</span> Learning layer — contextual Multi-Armed Bandits</h2>
+      <p class="section-sub">
+        With dozens of cohorts × multiple intervention arms, classic A/B testing is too slow and wastes exposure on losing
+        arms. A contextual bandit (Thompson sampling) treats cohort features — role, shift, region, tenure — as context and
+        learns the best intervention per cohort while still exploring. <em>West-coast overnight stockers may respond to
+        different incentives than East-coast stockers — the bandit finds out, and surfaces the pattern for humans to interrogate.</em>
+      </p>
+      <div id="guardrails" class="guardrail-grid"></div>
+    </div>
+
+    <div class="section" id="layer-5">
+      <h2><span class="layer-chip">Layer 5</span> Roadmapping surface <span class="interactive-tag">interactive</span></h2>
+      <p class="section-sub">
+        Every candidate roadmap item is scored by <em>expected minutes returned</em> + <em>expected retention lift</em>
+        × confidence, against build cost. Adjust the weights — the ranking recomputes. Roadmap reviews stop being opinion
+        tournaments; they become “here’s what the signals rank, and here’s where I’m overriding the model and why.”
+      </p>
+      <div class="roadmap-controls">
+        <label class="weight-label">Weight: minutes returned
+          <input type="range" id="w-minutes" min="0" max="100" value="50">
+          <output id="w-minutes-out">50%</output>
+        </label>
+        <label class="weight-label">Weight: retention lift
+          <input type="range" id="w-retention" min="0" max="100" value="50">
+          <output id="w-retention-out">50%</output>
+        </label>
+      </div>
+      <div id="roadmap-chart" class="roadmap-chart" role="img" aria-label="Ranked roadmap candidates by weighted opportunity score"></div>
+      <p class="footnote">Illustrative candidates with hypothetical scores — the real dashboard is fed by Layers 2–4. Score = (minutes-returned × weight + retention-lift × weight) × confidence ÷ build cost.</p>
+    </div>
+
+    <div class="section">
+      <h2>Scaling with engineering &amp; data science</h2>
+      <div class="scale-grid">
+        <div class="scale-card"><h3>Feature store</h3><p>Signals land in a shared feature store on the Element platform — built to hand off, not to hoard.</p></div>
+        <div class="scale-card"><h3>Versioned scores</h3><p>Scores are versioned models with monitoring owned by DS; product owns the semantics.</p></div>
+        <div class="scale-card"><h3>Config-driven arms</h3><p>Interventions are config-driven templates — a new arm is config, not code.</p></div>
+        <div class="scale-card"><h3>Launch criteria</h3><p>WCAG 2.2 AA and 44-language coverage as launch criteria; associate co-design panels each field cycle.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== BUILDER ===================== -->
+  <section id="view-builder" class="view" hidden>
+    <div class="view-head">
+      <h1>Strategy builder</h1>
+      <p class="section-sub">
+        Build a new alternative in the same shape as Plans A, B, and C — thesis, evidence trigger, 30/60/90 phases,
+        metrics, risks, and experiences across all three modes. Your plan renders live on the right, saves to this
+        browser, and appears alongside the pre-built strategies.
+      </p>
+    </div>
+
+    <div class="builder-start" id="builder-start">
+      <span class="presets-label">Start from:</span>
+      <button class="chip-btn" data-template="blank">Blank canvas</button>
+      <button class="chip-btn" data-template="plan-a">Clone Plan A</button>
+      <button class="chip-btn" data-template="plan-b">Clone Plan B</button>
+      <button class="chip-btn" data-template="plan-c">Clone Plan C</button>
+      <span class="builder-io">
+        <button class="chip-btn" id="import-btn" type="button">Import JSON</button>
+        <input type="file" id="import-file" accept="application/json" hidden>
+      </span>
+    </div>
+
+    <div class="builder-layout">
+      <form id="builder-form" class="builder-form" autocomplete="off">
+        <fieldset>
+          <legend>1 · Identity</legend>
+          <label>Plan name<input type="text" id="f-name" placeholder="e.g., Plan D — “Voice of the floor”" required></label>
+          <label>One-line bet (tagline)<input type="text" id="f-tagline" placeholder="e.g., Managers first: fix the multiplier"></label>
+          <label>Thesis — the strategic bet
+            <textarea id="f-thesis" rows="3" placeholder="What do you believe, and why is it the highest-leverage bet? e.g., “Team leads are the retention multiplier — arm them with cohort signals and every intervention lands warmer.”"></textarea>
+          </label>
+        </fieldset>
+
+        <fieldset>
+          <legend>2 · Evidence trigger</legend>
+          <label>Choose this plan if discovery shows…
+            <textarea id="f-chooseif" rows="2" placeholder="What would the discovery sprint have to reveal for this to be the right entry point?"></textarea>
+          </label>
+        </fieldset>
+
+        <fieldset>
+          <legend>3 · 30 / 60 / 90 phases</legend>
+          <div class="phase-block">
+            <h4>Days 1–30</h4>
+            <label>Focus<input type="text" id="f-p1-focus" placeholder="Discovery sprint + …"></label>
+            <label>Key deliverables <small>(one per line)</small><textarea id="f-p1-deliv" rows="3" placeholder="Baseline metric&#10;Journey map&#10;Opportunity ranking"></textarea></label>
+          </div>
+          <div class="phase-block">
+            <h4>Days 31–60</h4>
+            <label>Focus<input type="text" id="f-p2-focus" placeholder="MVP: …"></label>
+            <label>Key deliverables <small>(one per line)</small><textarea id="f-p2-deliv" rows="3"></textarea></label>
+          </div>
+          <div class="phase-block">
+            <h4>Days 61–90</h4>
+            <label>Focus<input type="text" id="f-p3-focus" placeholder="Measure, iterate, scale case"></label>
+            <label>Key deliverables <small>(one per line)</small><textarea id="f-p3-deliv" rows="3"></textarea></label>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend>4 · Experience coverage <span class="legend-hint">every plan should answer all three</span></legend>
+          <label class="mode-field mode-proactive"><span class="mode-dot" aria-hidden="true"></span>Proactive experiences <small>(one per line — nudges, alerts, predictions)</small>
+            <textarea id="f-mode-proactive" rows="3" placeholder="e.g., Detect schedule conflict before the associate does"></textarea>
+          </label>
+          <label class="mode-field mode-reactive"><span class="mode-dot" aria-hidden="true"></span>Reactive intelligence &amp; insights <small>(one per line — scores, dashboards, reads)</small>
+            <textarea id="f-mode-reactive" rows="3" placeholder="e.g., Cohort friction score dashboard for team leads"></textarea>
+          </label>
+          <label class="mode-field mode-conversational"><span class="mode-dot" aria-hidden="true"></span>Conversational experiences <small>(one per line — Sidekick answers and action loops)</small>
+            <textarea id="f-mode-conversational" rows="3" placeholder="e.g., “Swap my Saturday shift” — full action loop in chat"></textarea>
+          </label>
+        </fieldset>
+
+        <fieldset>
+          <legend>5 · Measurement</legend>
+          <label>North-star metric<input type="text" id="f-northstar" placeholder="The single number this plan moves"></label>
+          <label>Supporting metrics <small>(one per line)</small><textarea id="f-supporting" rows="3"></textarea></label>
+        </fieldset>
+
+        <fieldset>
+          <legend>6 · Risks</legend>
+          <label>Key risks &amp; mitigations <small>(one per line)</small><textarea id="f-risks" rows="3" placeholder="e.g., Retention is multi-causal — the app can only move its share"></textarea></label>
+        </fieldset>
+
+        <div class="builder-actions">
+          <button type="submit" class="btn btn-primary" id="save-plan-btn">Save plan</button>
+          <button type="button" class="btn btn-ghost" id="export-plan-btn">Export JSON</button>
+          <button type="button" class="btn btn-ghost btn-danger" id="reset-form-btn">Clear form</button>
+        </div>
+        <p class="footnote" id="builder-status" role="status"></p>
+      </form>
+
+      <div class="builder-preview">
+        <h3 class="preview-title">Live preview</h3>
+        <div id="builder-preview-card"></div>
+        <div id="builder-coverage-meter" class="coverage-meter"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== COVERAGE ===================== -->
+  <section id="view-coverage" class="view" hidden>
+    <div class="view-head">
+      <h1>Experience coverage matrix</h1>
+      <p class="section-sub">
+        Every plan — pre-built or yours — mapped against the three experience modes. A strategy that leaves a column
+        empty is answering only part of the associate’s day.
+      </p>
+    </div>
+    <div id="coverage-matrix" class="table-wrap"></div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <p>
+    Sidekick Strategy Studio · Allen Hoem · Principal Product Manager candidate (R-2555971).
+    An independent candidate work product — not affiliated with or endorsed by Walmart Inc.
+  </p>
+</footer>
+
+<script src="data.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
