@@ -281,8 +281,41 @@
       "<h3>" + esc(g.title) + "</h3><p>" + esc(g.text) + "</p></div>").join("");
   }
 
-  /* ---------- engine: roadmap chart ---------- */
-  function renderRoadmap() {
+  /* ---------- fit strips ("how this fits") ---------- */
+  function renderFitStrips() {
+    $$("[data-fit]").forEach(el => {
+      const current = el.getAttribute("data-fit");
+      el.innerHTML =
+        '<div class="fit-strip">' +
+          '<div class="fit-nodes">' +
+            FRAMEWORK_MAP.map((n, i) =>
+              (i ? '<span class="fit-arrow" aria-hidden="true">→</span>' : "") +
+              '<a class="fit-node' + (n.key === current ? " current" : "") + '" href="' + n.href + '">' +
+                "<strong>" + esc(n.label) + "</strong><small>" + esc(n.blurb) + "</small></a>"
+            ).join("") +
+          "</div>" +
+          '<p class="fit-blurb">' + esc(FIT_BLURBS[current] || "") + "</p>" +
+        "</div>";
+    });
+  }
+
+  /* ---------- science panels ("behind the scenes") ---------- */
+  function renderScience() {
+    $$("[data-science]").forEach(el => {
+      const s = SCIENCE[el.getAttribute("data-science")];
+      if (!s) return;
+      // Body strings are trusted framework copy from data.js (contain markup like <code>).
+      el.innerHTML =
+        '<details class="science">' +
+          "<summary><span class=\"science-icon\" aria-hidden=\"true\">🔬</span>" + esc(s.title) +
+          '<span class="science-hint">behind the scenes</span></summary>' +
+          '<div class="science-body">' + s.body.map(p => "<p>" + p + "</p>").join("") + "</div>" +
+        "</details>";
+    });
+  }
+
+  /* ---------- roadmap: shared scoring ---------- */
+  function scoredRoadmap() {
     const wM = Number($("#w-minutes").value);
     const wR = Number($("#w-retention").value);
     $("#w-minutes-out").textContent = wM + "%";
@@ -293,6 +326,17 @@
       const score = (value * (item.confidence / 100)) / item.cost;
       return Object.assign({ score }, item);
     }).sort((a, b) => b.score - a.score);
+    scored.forEach((item, i) => { item.rank = i + 1; });
+    return scored;
+  }
+
+  function renderRoadmap() {
+    const scored = scoredRoadmap();
+    renderRoadmapBars(scored);
+    renderSwimlanes(scored);
+  }
+
+  function renderRoadmapBars(scored) {
     const max = scored[0].score || 1;
     $("#roadmap-chart").innerHTML = scored.map(item =>
       '<div class="roadmap-row" title="minutes ' + item.minutes + ' · retention ' + item.retention +
@@ -301,6 +345,51 @@
         '<div class="rr-track"><div class="rr-bar" style="width:' + Math.max(3, (item.score / max) * 100) + '%"></div></div>' +
         '<div class="rr-val">' + item.score.toFixed(1) + "</div>" +
       "</div>").join("");
+  }
+
+  /* ---------- roadmap: journey swimlanes ---------- */
+  function roadmapCard(item) {
+    const top = item.rank <= 3;
+    return '<div class="rm-card' + (top ? " top-pick" : "") + '" tabindex="0" ' +
+      'title="minutes ' + item.minutes + ' · retention ' + item.retention +
+      ' · confidence ' + item.confidence + '% · cost ' + item.cost + '/5 · rank #' + item.rank + '">' +
+      '<div class="rm-card-head">' +
+        '<span class="plan-dot" title="From Plan ' + esc(item.plan) + '">' + esc(item.plan) + "</span>" +
+        "<strong>" + esc(item.name) + "</strong>" +
+        (top ? '<span class="top-pick-dot" title="Top 3 by current weights">★</span>' : "") +
+      "</div>" +
+      "<small>" + esc(item.sub) + "</small>" +
+      '<div class="rm-card-foot">' +
+        '<span class="rm-modes">' + item.modes.map(m =>
+          '<span class="mode-dot" style="background:var(--mode-' + m + ')" title="' +
+          esc(MODES.find(x => x.key === m).label) + '"></span>').join("") + "</span>" +
+        '<span class="rm-score">' + item.score.toFixed(1) + "</span>" +
+      "</div>" +
+    "</div>";
+  }
+
+  function renderSwimlanes(scored) {
+    const byCell = {};
+    scored.forEach(item => {
+      const key = item.lane + "|" + item.horizon;
+      (byCell[key] = byCell[key] || []).push(item);
+    });
+    $("#swimlanes").innerHTML =
+      '<div class="sl-row sl-head">' +
+        '<div class="sl-lane-label"></div>' +
+        HORIZONS.map(h =>
+          '<div class="sl-col-head"><strong>' + esc(h.label) + "</strong><small>" + esc(h.sub) + "</small></div>").join("") +
+      "</div>" +
+      JOURNEY_LANES.map(lane =>
+        '<div class="sl-row' + (lane.key === "platform" ? " sl-platform" : "") + '">' +
+          '<div class="sl-lane-label"><strong>' + esc(lane.label) + "</strong><small>" + esc(lane.desc) + "</small></div>" +
+          HORIZONS.map(h => {
+            const items = byCell[lane.key + "|" + h.key] || [];
+            return '<div class="sl-cell">' +
+              (items.length ? items.map(roadmapCard).join("") : '<span class="sl-empty">—</span>') +
+            "</div>";
+          }).join("") +
+        "</div>").join("");
   }
 
   /* ---------- builder ---------- */
@@ -477,7 +566,7 @@
   }
 
   /* ---------- routing ---------- */
-  const VIEWS = ["overview", "plans", "engine", "builder", "coverage"];
+  const VIEWS = ["overview", "plans", "engine", "roadmap", "builder", "coverage"];
 
   function route() {
     const hash = location.hash || "#/overview";
@@ -503,6 +592,8 @@
   /* ---------- init ---------- */
   document.addEventListener("DOMContentLoaded", () => {
     initTheme();
+    renderFitStrips();
+    renderScience();
     renderDiscovery();
     renderPlanGrids();
     renderInputsTable();

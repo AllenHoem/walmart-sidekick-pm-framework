@@ -351,14 +351,115 @@ const GUARDRAILS = [
   }
 ];
 
-/* Layer 5 illustrative roadmap candidates.
+/* ---------- Roadmap (Layer 5, promoted to its own view) ----------
+   Swimlanes = associate journey milestones; columns = 30/60/90 horizons.
    minutes / retention / confidence on 0–100; cost 1–5 (build effort). */
-const ROADMAP_ITEMS = [
-  { name: "Schedule-conflict action agent", sub: "Plan B cluster #1", minutes: 90, retention: 55, confidence: 80, cost: 4 },
-  { name: "Onboarding Companion nano-agent", sub: "Plan A MVP", minutes: 45, retention: 85, confidence: 70, cost: 3 },
-  { name: "Retention-risk score + 2 arms", sub: "Plan C MVP", minutes: 20, retention: 80, confidence: 55, cost: 4 },
-  { name: "Fix top dead-end flow", sub: "friction score, all cohorts", minutes: 70, retention: 35, confidence: 90, cost: 2 },
-  { name: "Career-pathing nudges (LBU)", sub: "growth-readiness cohorts", minutes: 15, retention: 60, confidence: 60, cost: 2 },
-  { name: "Time-off action agent", sub: "Plan B cluster #2", minutes: 60, retention: 40, confidence: 65, cost: 3 },
-  { name: "Micro-recognition mechanics", sub: "existing gamification rails", minutes: 10, retention: 50, confidence: 50, cost: 1 }
+
+const JOURNEY_LANES = [
+  { key: "firstshift", label: "First shift", desc: "Day 1 — badge-in, orientation, “what do I do right now?”" },
+  { key: "first90", label: "First 90 days", desc: "The onboarding arc where attrition concentrates" },
+  { key: "everyday", label: "Everyday work", desc: "Daily friction: schedules, tasks, questions mid-shift" },
+  { key: "growth", label: "Growth & advancement", desc: "Team-lead track, LBU certificates, career pathing" },
+  { key: "platform", label: "Platform foundations", desc: "The rails beneath the journey — signals, scores, learning" }
 ];
+
+const HORIZONS = [
+  { key: "h1", label: "Days 1–30", sub: "Discover & baseline" },
+  { key: "h2", label: "Days 31–60", sub: "MVP" },
+  { key: "h3", label: "Days 61–90", sub: "Prove & expand" }
+];
+
+const ROADMAP_ITEMS = [
+  { name: "Retention funnel baselines", sub: "7/30/60/90-day survival curves", plan: "A", lane: "platform", horizon: "h1", modes: ["reactive"], minutes: 5, retention: 45, confidence: 90, cost: 1 },
+  { name: "Intent-cluster opportunity ranking", sub: "3M questions/day, scored", plan: "B", lane: "platform", horizon: "h1", modes: ["reactive"], minutes: 10, retention: 30, confidence: 90, cost: 1 },
+  { name: "Cohort taxonomy + signal inventory", sub: "role × shift × region × tenure", plan: "C", lane: "platform", horizon: "h1", modes: ["reactive"], minutes: 5, retention: 40, confidence: 85, cost: 1 },
+  { name: "Fix top dead-end flow", sub: "friction score, all cohorts", plan: "B", lane: "everyday", horizon: "h1", modes: ["reactive"], minutes: 70, retention: 35, confidence: 90, cost: 2 },
+
+  { name: "Day-1 orientation agent", sub: "checklist as a conversation", plan: "A", lane: "firstshift", horizon: "h2", modes: ["conversational"], minutes: 30, retention: 70, confidence: 75, cost: 2 },
+  { name: "“Who do I ask?” routing", sub: "no first-shift dead ends", plan: "A", lane: "firstshift", horizon: "h2", modes: ["conversational"], minutes: 25, retention: 55, confidence: 65, cost: 2 },
+  { name: "Onboarding Companion nano-agent", sub: "Plan A MVP · pilot 10–20 stores", plan: "A", lane: "first90", horizon: "h2", modes: ["proactive", "conversational"], minutes: 45, retention: 85, confidence: 70, cost: 3 },
+  { name: "Buddy-connection prompts", sub: "isolation is an exit theme", plan: "A", lane: "first90", horizon: "h2", modes: ["proactive"], minutes: 10, retention: 60, confidence: 55, cost: 1 },
+  { name: "Schedule-conflict action agent", sub: "Plan B cluster #1 — full loop", plan: "B", lane: "everyday", horizon: "h2", modes: ["proactive", "conversational"], minutes: 90, retention: 55, confidence: 80, cost: 4 },
+  { name: "Retention-risk score + 2 arms", sub: "Plan C MVP · nudge vs. reward", plan: "C", lane: "platform", horizon: "h2", modes: ["proactive", "reactive"], minutes: 20, retention: 80, confidence: 55, cost: 4 },
+
+  { name: "Micro-recognition mechanics", sub: "existing gamification rails", plan: "A", lane: "first90", horizon: "h3", modes: ["proactive"], minutes: 10, retention: 50, confidence: 50, cost: 1 },
+  { name: "Time-off action agent", sub: "Plan B cluster #2", plan: "B", lane: "everyday", horizon: "h3", modes: ["proactive", "conversational"], minutes: 60, retention: 40, confidence: 65, cost: 3 },
+  { name: "Trust transparency + micro-training", sub: "low-trust cohorts", plan: "C", lane: "everyday", horizon: "h3", modes: ["reactive", "conversational"], minutes: 10, retention: 35, confidence: 50, cost: 2 },
+  { name: "Career-pathing nudges (LBU)", sub: "growth-readiness cohorts", plan: "C", lane: "growth", horizon: "h3", modes: ["proactive", "conversational"], minutes: 15, retention: 60, confidence: 60, cost: 2 },
+  { name: "Contextual bandit pilot", sub: "3–4 arms, pilot regions", plan: "C", lane: "platform", horizon: "h3", modes: ["proactive", "reactive"], minutes: 15, retention: 75, confidence: 45, cost: 5 }
+];
+
+/* ---------- "How this fits" framework map ---------- */
+const FRAMEWORK_MAP = [
+  { key: "engine", label: "Signal Engine", href: "#/engine", blurb: "senses & learns" },
+  { key: "plans", label: "Strategies", href: "#/plans", blurb: "the bets it justifies" },
+  { key: "roadmap", label: "Roadmap", href: "#/roadmap", blurb: "sequenced delivery" },
+  { key: "builder", label: "Builder", href: "#/builder", blurb: "author new bets" },
+  { key: "coverage", label: "Coverage", href: "#/coverage", blurb: "completeness audit" }
+];
+
+const FIT_BLURBS = {
+  plans: "Strategies are outputs of the Signal Engine — three pre-computed bets the discovery evidence could justify. Each one's capabilities land on the Roadmap; the Builder authors new bets in the same shape; Coverage audits them all.",
+  engine: "The Signal Engine is the machine underneath everything: signals → cohort scores → interventions → bandit learning. Strategies are its first three outputs, and its Layer 5 scoring feeds the Roadmap directly.",
+  roadmap: "The Roadmap is where Signal Engine scores meet the associate journey: every capability from every plan, placed on a journey milestone and a 30/60/90 horizon, ranked by the same opportunity formula.",
+  builder: "The Builder writes new strategies in the exact schema Plans A–C use — which is what keeps them comparable in the Signal Engine's scoring and visible to the Coverage audit.",
+  coverage: "Coverage is the audit at the end of the pipeline: every plan — pre-built or yours — checked against the three experience modes, so no strategy quietly ignores part of the associate's day."
+};
+
+/* ---------- "Behind the scenes" science panels ---------- */
+const SCIENCE = {
+  overview: {
+    title: "The science: evidence triangulation",
+    body: [
+      "The discovery sprint is a triangulation design: telemetry shows what associates <em>do</em>, voice-of-associate shows what they <em>say</em>, and floor shifts show what it <em>feels like</em>. A pain point that appears in all three sources is real; one that appears in only one is a hypothesis.",
+      "Pain points are then ranked by a single composite: <code>frequency × time-cost × emotional severity</code>. Frequency and time-cost come from telemetry; emotional severity is coded from verbatims and field notes. Ranking on the product — not any single factor — is what stops the loudest feedback channel from setting the roadmap."
+    ]
+  },
+  plans: {
+    title: "The science: why three plans, and what makes them comparable",
+    body: [
+      "Each plan is a falsifiable bet, not a preference: it declares up front what the discovery data would have to show for it to be the right entry point (“choose this if…”). That's a decision rule — the sprint output selects the plan, not conviction.",
+      "All three share one schema: thesis → evidence trigger → 30/60/90 phases → north star → risks → experience modes. Identical structure is what makes them comparable in roadmap scoring and auditable in Coverage — and it's the same schema the Builder enforces on new alternatives.",
+      "Every plan is also an experiment: pilot vs. control stores, a scale/kill decision at day 90, and a north star that a CFO can price (e.g., cost per replaced associate vs. pilot retention lift)."
+    ]
+  },
+  scores: {
+    title: "The science: cohort scoring and the decision layer",
+    body: [
+      "Scores are computed per cohort (role × shift × region × tenure band), never per individual. Cohorts give larger samples per estimate — so scores are statistically stable — and they're the right privacy posture: the engine never carries a hidden label on a person.",
+      "The decision layer in this simulator is a transparent threshold policy — exactly what runs on this page: <code>friction ≥ 65</code>, <code>engagement ≤ 40 AND tenure &lt; 90d</code>, <code>retention-risk ≥ 60</code>, <code>growth-readiness ≥ 60</code>, <code>trust ≤ 40</code>. In production the thresholds are set from score distributions (e.g., top-quartile friction), but the policy stays human-readable on purpose: a People team can audit every trigger.",
+      "Multiple families can fire at once — a struggling new hire trips both onboarding and rewards. The intervention budget cap (Layer 4) is what arbitrates: the engine competes for scarce attention rather than sending everything."
+    ]
+  },
+  bandit: {
+    title: "The science: Thompson sampling in one paragraph",
+    body: [
+      "For each cohort-context and each intervention arm, the bandit keeps a probability distribution over “how well does this arm work here?” To pick an arm it <em>samples</em> from each distribution and plays the winner — arms it's unsure about occasionally win the sample, so exploration happens automatically, but persistently weak arms get sampled less and less. That's the whole trick: exploration is proportional to uncertainty.",
+      "The reward fed to the bandit is a leading indicator (e.g., week-4 engagement) that is itself validated against 90-day retention in permanent holdout groups — because a bandit optimizes exactly what you give it, and “clicked the nudge” is not the business goal.",
+      "Fairness floors are hard constraints, not preferences: every arm keeps a minimum exposure per cohort so the learner can't silently starve a group of a beneficial intervention, and realized rewards are audited for equity across cohorts."
+    ]
+  },
+  roadmap: {
+    title: "The science: the opportunity-scoring formula",
+    body: [
+      "Every card is scored with the same formula this page actually runs: <code>score = (minutes-returned × w<sub>m</sub> + retention-lift × w<sub>r</sub>) × confidence ÷ build-cost</code>, with the weights normalized from the two sliders.",
+      "Confidence multiplies rather than adds: a huge opportunity you barely believe in should rank like a modest one you're sure of. Cost divides: it converts impact into impact-per-unit-effort, which is the number a capacity-constrained team can act on.",
+      "The swimlanes add the dimension scores can't see — <em>where in the associate's journey</em> a capability lands. Scores decide priority; lanes and horizons decide sequence and expose gaps (an empty lane means a journey milestone no plan is serving).",
+      "The point of the dashboard isn't to obey the model — it's to make overrides explicit: “here's what the signals rank, here's where I'm overriding, and why.”"
+    ]
+  },
+  builder: {
+    title: "The science: why the form is shaped like this",
+    body: [
+      "The builder is a forcing function. Each field maps to a discipline: an evidence trigger makes the plan falsifiable; a north star forces one number; risks demand a pre-mortem; the three mode fields make experience coverage explicit instead of accidental.",
+      "Because output conforms to the same schema as Plans A–C, a custom plan is instantly comparable — it appears in Coverage, and its capabilities can be scored with the same roadmap formula. Frameworks beat opinions only when everything speaks the same language."
+    ]
+  },
+  coverage: {
+    title: "The science: why these three modes",
+    body: [
+      "Proactive, reactive-intelligence, and conversational cover the three possible directions of an interaction: the system initiates (proactive), the human interrogates the data (reactive), or the two converse to get something done (conversational). A capability that fits none of them usually isn't an experience at all — it's infrastructure.",
+      "The matrix is a completeness check, the same way the mode-coverage meter in the Builder is: an empty cell is not automatically wrong, but it must be a decision, not an accident."
+    ]
+  }
+};

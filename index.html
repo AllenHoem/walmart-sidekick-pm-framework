@@ -23,6 +23,7 @@
       <a href="#/overview" data-route="overview">Overview</a>
       <a href="#/plans" data-route="plans">Strategies</a>
       <a href="#/engine" data-route="engine">Signal Engine</a>
+      <a href="#/roadmap" data-route="roadmap">Roadmap</a>
       <a href="#/builder" data-route="builder">Builder</a>
       <a href="#/coverage" data-route="coverage">Coverage</a>
     </nav>
@@ -67,6 +68,7 @@
       <h2>The shared foundation — Weeks 1–2 discovery sprint</h2>
       <p class="section-sub">Regardless of which plan runs, the first two weeks are identical. Click each step for the detail and the question it answers.</p>
       <div id="discovery-track" class="discovery-track"></div>
+      <div data-science="overview"></div>
       <aside class="callout">
         <strong>Why this order matters:</strong> associate turnover is the burning problem, and retail attrition
         concentrates brutally in the first 90 days of employment. The discovery sprint answers one question with
@@ -107,8 +109,10 @@
         Three pre-built bets, each earned from the same discovery sprint — plus any alternatives you build.
         Every plan declares its coverage across the three experience modes.
       </p>
+      <div data-fit="plans"></div>
     </div>
     <div id="plan-grid" class="plan-grid"></div>
+    <div data-science="plans"></div>
     <div class="add-plan-strip">
       <a class="btn btn-primary" href="#/builder">＋ Build a new alternative</a>
     </div>
@@ -125,6 +129,7 @@
         The signals-to-roadmap framework that makes the plans comparable and the roadmap evidence-driven.
         Five layers — from raw data to a ranked roadmap.
       </p>
+      <div data-fit="engine"></div>
     </div>
 
     <div class="engine-layers" id="engine-layer-nav" role="tablist" aria-label="Signal Engine layers"></div>
@@ -178,6 +183,7 @@
         across protected classes must be auditable, and reward mechanics must never read as pay-for-surveillance.
         Every incentive arm ships with an HR/legal review and an equity audit.
       </aside>
+      <div data-science="scores"></div>
     </div>
 
     <div class="section" id="layer-4">
@@ -189,27 +195,19 @@
         different incentives than East-coast stockers — the bandit finds out, and surfaces the pattern for humans to interrogate.</em>
       </p>
       <div id="guardrails" class="guardrail-grid"></div>
+      <div data-science="bandit"></div>
     </div>
 
     <div class="section" id="layer-5">
-      <h2><span class="layer-chip">Layer 5</span> Roadmapping surface <span class="interactive-tag">interactive</span></h2>
+      <h2><span class="layer-chip">Layer 5</span> Roadmapping surface</h2>
       <p class="section-sub">
-        Every candidate roadmap item is scored by <em>expected minutes returned</em> + <em>expected retention lift</em>
-        × confidence, against build cost. Adjust the weights — the ranking recomputes. Roadmap reviews stop being opinion
-        tournaments; they become “here’s what the signals rank, and here’s where I’m overriding the model and why.”
+        The output layer: every candidate roadmap item is scored by <em>expected minutes returned</em> + <em>expected
+        retention lift</em> × confidence, against build cost — then placed on the associate journey. It's a full view
+        of its own.
       </p>
-      <div class="roadmap-controls">
-        <label class="weight-label">Weight: minutes returned
-          <input type="range" id="w-minutes" min="0" max="100" value="50">
-          <output id="w-minutes-out">50%</output>
-        </label>
-        <label class="weight-label">Weight: retention lift
-          <input type="range" id="w-retention" min="0" max="100" value="50">
-          <output id="w-retention-out">50%</output>
-        </label>
+      <div class="add-plan-strip" style="text-align:left">
+        <a class="btn btn-primary" href="#/roadmap">Open the roadmap →</a>
       </div>
-      <div id="roadmap-chart" class="roadmap-chart" role="img" aria-label="Ranked roadmap candidates by weighted opportunity score"></div>
-      <p class="footnote">Illustrative candidates with hypothetical scores — the real dashboard is fed by Layers 2–4. Score = (minutes-returned × weight + retention-lift × weight) × confidence ÷ build cost.</p>
     </div>
 
     <div class="section">
@@ -223,6 +221,52 @@
     </div>
   </section>
 
+  <!-- ===================== ROADMAP ===================== -->
+  <section id="view-roadmap" class="view" hidden>
+    <div class="view-head">
+      <h1>Roadmap <span class="interactive-tag">interactive</span></h1>
+      <p class="section-sub">
+        Capabilities from all three plans, organized two ways at once: <strong>swimlanes</strong> map each capability
+        to the journey milestone it serves, columns map it to a 30/60/90 horizon, and the opportunity score decides
+        priority within a cell. Adjust the weights — scores and the ranked list recompute everywhere.
+      </p>
+      <div data-fit="roadmap"></div>
+    </div>
+
+    <div class="roadmap-controls">
+      <label class="weight-label">Weight: minutes returned
+        <input type="range" id="w-minutes" min="0" max="100" value="50">
+        <output id="w-minutes-out">50%</output>
+      </label>
+      <label class="weight-label">Weight: retention lift
+        <input type="range" id="w-retention" min="0" max="100" value="50">
+        <output id="w-retention-out">50%</output>
+      </label>
+      <div class="lane-legend" aria-hidden="true">
+        <span class="legend-item"><span class="plan-dot">A</span>Plan A</span>
+        <span class="legend-item"><span class="plan-dot">B</span>Plan B</span>
+        <span class="legend-item"><span class="plan-dot">C</span>Plan C</span>
+        <span class="legend-item"><span class="top-pick-dot" aria-hidden="true">★</span>Top 3 by score</span>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>Journey swimlanes</h2>
+      <div class="swimlane-wrap">
+        <div id="swimlanes" class="swimlanes"></div>
+      </div>
+      <p class="footnote">An empty cell is information: a journey milestone no capability is serving in that horizon. Illustrative candidates with hypothetical scores — the real board is fed by Signal Engine Layers 2–4.</p>
+    </div>
+
+    <div class="section">
+      <h2>Ranked by opportunity score</h2>
+      <div id="roadmap-chart" class="roadmap-chart" role="img" aria-label="Ranked roadmap candidates by weighted opportunity score"></div>
+      <p class="footnote">Score = (minutes-returned × weight + retention-lift × weight) × confidence ÷ build cost.</p>
+    </div>
+
+    <div data-science="roadmap"></div>
+  </section>
+
   <!-- ===================== BUILDER ===================== -->
   <section id="view-builder" class="view" hidden>
     <div class="view-head">
@@ -232,7 +276,9 @@
         metrics, risks, and experiences across all three modes. Your plan renders live on the right, saves to this
         browser, and appears alongside the pre-built strategies.
       </p>
+      <div data-fit="builder"></div>
     </div>
+    <div data-science="builder"></div>
 
     <div class="builder-start" id="builder-start">
       <span class="presets-label">Start from:</span>
@@ -331,8 +377,10 @@
         Every plan — pre-built or yours — mapped against the three experience modes. A strategy that leaves a column
         empty is answering only part of the associate’s day.
       </p>
+      <div data-fit="coverage"></div>
     </div>
     <div id="coverage-matrix" class="table-wrap"></div>
+    <div data-science="coverage"></div>
   </section>
 </main>
 
