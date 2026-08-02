@@ -60,3 +60,10 @@ python3 -m http.server 8000
 - Colors used for the three modes are a colorblind-validated categorical trio; every mode
   reference carries a text label, never color alone.
 - This is an independent candidate work product — not affiliated with or endorsed by Walmart Inc.
+
+## Writing standards
+
+All new prose in this repo (site copy, docs, commit messages, PR text) follows the executive
+writing rules in [`CLAUDE.md`](CLAUDE.md): answer-first structure, claim-style headers, no
+"The [Noun]" titling, no em-dashes, no filler vocabulary. Method reference for briefs, memos,
+and decks: [`docs/executive-presentation-playbook.md`](docs/executive-presentation-playbook.md).
