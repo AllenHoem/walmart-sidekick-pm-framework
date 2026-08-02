@@ -10,10 +10,10 @@ Principal Product Manager candidate, R-2555971).
 
 | Section | What it does |
 |---|---|
-| **Overview** | The premise, the shared Weeks 1–2 discovery sprint (interactive timeline), the three experience modes, and grounding facts |
-| **Strategies** | Three pre-built strategic bets — Plan A (*Own the first 90 days*), Plan B (*Answer → Action*), Plan C (*The Signal Engine*) — each with thesis, 30/60/90 phases, north-star and supporting metrics, risks, and "choose this if" evidence triggers |
-| **Signal Engine** | The five-layer signals-to-roadmap framework, including an **interactive cohort simulator** (move the five cohort scores and watch the decision layer select intervention families) |
-| **Roadmap** | **Journey swimlanes** — capabilities from every plan mapped to the associate-journey milestone they serve (First shift → First 90 days → Everyday work → Growth, plus Platform foundations) across 30/60/90 horizons, plus a weighted opportunity-score ranking with adjustable sliders |
+| **The Brief** | The 60-second executive path: five frames (Problem → Insight → Three bets → POV → Ask), the R4 equation (*Rejuvenation & rewards drive retention & results*), per-plan ROI headlines, the discovery sprint, and grounding facts |
+| **Strategies** | Three distinct bets — Plan A (*the new hire*, Maya), Plan B (*everyone's daily friction*, Devon), Plan C (*the platform that learns per cohort*) — each with a persona + signature moment, a four-surface **storyboard** (alert → conversation → reward → growth path), CFO-style ROI math with stated assumptions, 30/60/90 phases, metrics, risks, and evidence triggers |
+| **Signal Engine** | The five-layer signals-to-roadmap framework: an **interactive cohort simulator** (six scores including Wellbeing → intervention families including Rejuvenation), the three-tier **reward ladder** (everyday / quarterly / career), bandit guardrails, and compliance said out loud |
+| **Roadmap** | **Journey swimlanes** with a **strategy dropdown filter** (ghosting non-selected plans) and mode filters, plus a weighted opportunity-score ranking with adjustable sliders |
 | **Builder** | A generic, ready-to-input experience for creating new strategic alternatives in the same shape as A/B/C — with a live preview, a mode-coverage check, localStorage persistence, and JSON export/import |
 | **Coverage** | A matrix mapping every plan (pre-built and custom) against the three experience modes |
 

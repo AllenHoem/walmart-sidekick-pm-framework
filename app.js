@@ -87,6 +87,7 @@
       "<h3>" + (custom ? "" : "Plan " + esc(letter) + " — ") + esc(plan.name) + "</h3>" +
       (plan.tagline ? '<p class="plan-tagline">' + esc(plan.tagline) + "</p>" : "") +
       '<p class="plan-thesis">' + esc(truncate(plan.thesis, 190)) + "</p>" +
+      (plan.signature ? '<p class="plan-signature">“' + esc(plan.signature) + "”</p>" : "") +
       modeChipRow(plan) +
       (plan.northStar ? '<p class="plan-meta"><strong>North star:</strong> ' + esc(plan.northStar) + "</p>" : "") +
       '<div class="plan-card-actions">' + actions + "</div>" +
@@ -137,8 +138,26 @@
         '<p class="eyebrow">' + (custom ? "Custom alternative" : "Pre-built strategic bet") + "</p>" +
         "<h1>" + (plan.letter && !custom ? "Plan " + esc(plan.letter) + " — " : "") + esc(plan.name) + "</h1>" +
         (plan.tagline ? '<p class="plan-tagline">' + esc(plan.tagline) + "</p>" : "") +
+        (plan.signature
+          ? '<div class="signature-strip">' +
+              (plan.persona ? '<span class="persona-chip">' + esc(plan.persona) + "</span>" : "") +
+              '<p class="signature-line">' + esc(plan.signature) + "</p>" +
+            "</div>"
+          : "") +
         (plan.thesis ? '<p class="detail-thesis"><strong>Thesis:</strong> ' + esc(plan.thesis) + "</p>" : "") +
       "</div>" +
+
+      renderStoryboard(plan) +
+
+      (plan.roi
+        ? '<div class="section"><h2>ROI for Walmart corporate</h2>' +
+          '<div class="roi-block">' +
+            '<p class="roi-headline">' + esc(plan.roi.headline) + "</p>" +
+            "<ul>" + plan.roi.math.map(m => "<li>" + esc(m) + "</li>").join("") + "</ul>" +
+            '<p class="footnote"><strong>Measurement:</strong> ' + esc(plan.roi.measurement) +
+            " Figures are illustrative order-of-magnitude models — the pilot replaces them with measured numbers.</p>" +
+          "</div></div>"
+        : "") +
 
       '<div class="section"><h2>30 / 60 / 90</h2><div class="phase-timeline">' +
         (plan.phases || []).map(ph =>
@@ -182,6 +201,96 @@
       loadPlanIntoForm(plan);
       location.hash = "#/builder";
     });
+  }
+
+  /* ---------- the brief ---------- */
+  function renderBrief() {
+    const frames = $("#brief-frames");
+    if (frames) {
+      frames.innerHTML = BRIEF_FRAMES.map((f, i) =>
+        '<a class="brief-frame" href="' + f.href + '">' +
+          '<span class="bf-kicker">' + esc(f.kicker) + "</span>" +
+          '<span class="bf-big">' + esc(f.big) + "</span>" +
+          '<span class="bf-support">' + esc(f.support) + "</span>" +
+          '<span class="bf-link">' + esc(f.link) + " →</span>" +
+        "</a>").join("");
+    }
+    const roi = $("#brief-roi");
+    if (roi) {
+      roi.innerHTML = BUILTIN_PLANS.map(p =>
+        '<a class="roi-card" href="#/plans/' + p.id + '">' +
+          '<span class="plan-dot">' + esc(p.letter) + "</span>" +
+          "<strong>" + esc(p.roi.headline) + "</strong>" +
+          "<small>" + esc(p.name) + " · north star: " + esc(p.northStar) + "</small>" +
+        "</a>").join("");
+    }
+  }
+
+  /* ---------- reward ladder ---------- */
+  function renderRewardLadder() {
+    const el = $("#reward-ladder");
+    if (!el) return;
+    el.innerHTML = REWARD_LADDER.map((t, i) =>
+      '<div class="ladder-card">' +
+        '<div class="ladder-tier"><span class="guardrail-num">' + (i + 1) + "</span>" + esc(t.tier) + "</div>" +
+        '<div class="ladder-grant">' + esc(t.grant) + "</div>" +
+        '<p class="ladder-items">' + esc(t.items) + "</p>" +
+        '<p class="ladder-note">' + esc(t.note) + "</p>" +
+      "</div>").join("");
+  }
+
+  /* ---------- storyboards ---------- */
+  function sbPhone(m) {
+    const s = m.screen || {};
+    let inner = "";
+    if (m.surface === "alert") {
+      inner = (s.clock ? '<div class="clock">' + esc(s.clock) + "</div>" : "") +
+        (s.notifs || []).map(n =>
+          '<div class="notif"><div class="nt">' + esc(n.head) + '</div><div class="nb">' + esc(n.body) + "</div></div>").join("") +
+        '<div class="homerow"></div><div class="homerow"></div>';
+    } else if (m.surface === "chat" || m.surface === "dead") {
+      inner = (s.items || []).map(it => {
+        if (it.who === "buttons") {
+          return '<div class="btnrow">' + (it.buttons || []).map(b =>
+            '<span class="pbtn' + (b.solid ? " solid" : "") + '">' + esc(b.label) + "</span>").join("") + "</div>";
+        }
+        return '<div class="bubble ' + esc(it.who) + '">' + esc(it.text) + "</div>";
+      }).join("");
+    } else if (m.surface === "reward") {
+      inner = '<div class="reward-card"><div class="big-emoji">' + esc(s.emoji || "⭐") + "</div>" +
+        '<div class="rt">' + esc(s.cardTitle) + '</div><div class="rs">' + esc(s.cardBody) + "</div></div>" +
+        '<div class="choice-col">' + (s.choices || []).map((c, i) =>
+          '<span class="pbtn' + (i === 0 ? " solid" : "") + '">' + esc(c) + "</span>").join("") + "</div>" +
+        (s.notif ? '<div class="notif"><div class="nb">' + esc(s.notif) + "</div></div>" : "");
+    } else if (m.surface === "path") {
+      inner = '<div class="phone-title">' + esc(s.pathTitle) + "</div>" +
+        '<div class="pbar"><div style="width:' + (s.progress || 0) + '%"></div></div>' +
+        '<div class="path">' + (s.steps || []).map(st =>
+          '<div class="path-step ' + esc(st.state) + '"><span class="path-dot">' +
+          (st.state === "done" ? "✓" : "") + "</span><span>" + esc(st.text) + "</span></div>").join("") + "</div>" +
+        (s.notif ? '<div class="notif"><div class="nb">' + esc(s.notif) + "</div></div>" : "");
+    }
+    const tag = m.surface === "dead" ? '<span class="dead-tag">Today</span>'
+      : (m.netnew ? '<span class="netnew">Net new</span>' : "");
+    const surfaceLabels = { alert: "① Alert", chat: "② Conversation", dead: "② Conversation", reward: "③ Reward", path: "④ Growth path" };
+    return '<div class="phone' + (m.surface === "dead" ? " dead" : "") + '">' +
+      '<span class="surface-tag">' + surfaceLabels[m.surface] + "</span>" + tag + inner + "</div>";
+  }
+
+  function renderStoryboard(plan) {
+    const sb = STORYBOARDS[plan.id];
+    if (!sb) return "";
+    return '<div class="section"><h2>A shift with Sidekick <span class="interactive-tag">storyboard</span></h2>' +
+      '<p class="section-sub">' + esc(sb.intro) + "</p>" +
+      '<div class="storyboard">' +
+        sb.moments.map(m =>
+          '<div class="moment">' + sbPhone(m) +
+            '<div class="moment-caption"><strong>' + esc(m.title) + "</strong><small>" + esc(m.caption) + "</small>" +
+            (m.impact.length ? '<div class="impact-chips">' + m.impact.map(i =>
+              '<span class="ichip ' + i + '">' + i + "</span>").join("") + "</div>" : "") +
+          "</div></div>").join("") +
+      "</div>" +
+      '<p class="footnote">Illustrative dialogue — draft UX, not shipped screens. Impact tags: improve daily work · retain past 90 days · grow into what’s next.</p></div>';
   }
 
   /* ---------- overview: discovery timeline ---------- */
@@ -314,7 +423,14 @@
     });
   }
 
-  /* ---------- roadmap: shared scoring ---------- */
+  /* ---------- roadmap: filters + shared scoring ---------- */
+  const rmFilter = { plan: "all", modes: new Set(MODES.map(m => m.key)) };
+
+  function itemVisible(item) {
+    if (rmFilter.plan !== "all" && item.plan !== rmFilter.plan) return false;
+    return item.modes.some(m => rmFilter.modes.has(m));
+  }
+
   function scoredRoadmap() {
     const wM = Number($("#w-minutes").value);
     const wR = Number($("#w-retention").value);
@@ -324,19 +440,25 @@
     const scored = ROADMAP_ITEMS.map(item => {
       const value = (item.minutes * (wM / total)) + (item.retention * (wR / total));
       const score = (value * (item.confidence / 100)) / item.cost;
-      return Object.assign({ score }, item);
+      return Object.assign({ score, visible: itemVisible(item) }, item);
     }).sort((a, b) => b.score - a.score);
-    scored.forEach((item, i) => { item.rank = i + 1; });
+    // Rank among visible items only, so ★ always marks the filtered view's top 3.
+    let r = 0;
+    scored.forEach(item => { item.rank = item.visible ? ++r : 0; });
     return scored;
   }
 
   function renderRoadmap() {
     const scored = scoredRoadmap();
-    renderRoadmapBars(scored);
+    renderRoadmapBars(scored.filter(i => i.visible));
     renderSwimlanes(scored);
   }
 
   function renderRoadmapBars(scored) {
+    if (!scored.length) {
+      $("#roadmap-chart").innerHTML = '<p class="footnote">Nothing matches the current filters.</p>';
+      return;
+    }
     const max = scored[0].score || 1;
     $("#roadmap-chart").innerHTML = scored.map(item =>
       '<div class="roadmap-row" title="minutes ' + item.minutes + ' · retention ' + item.retention +
@@ -347,10 +469,31 @@
       "</div>").join("");
   }
 
+  function initRoadmapFilters() {
+    $("#rm-plan-filter").addEventListener("change", e => {
+      rmFilter.plan = e.target.value;
+      renderRoadmap();
+    });
+    $$("#rm-mode-filter .mode-chip-btn").forEach(btn => {
+      btn.addEventListener("click", () => {
+        const mode = btn.getAttribute("data-mode");
+        if (rmFilter.modes.has(mode)) {
+          if (rmFilter.modes.size === 1) return; // keep at least one mode on
+          rmFilter.modes.delete(mode);
+          btn.classList.remove("active");
+        } else {
+          rmFilter.modes.add(mode);
+          btn.classList.add("active");
+        }
+        renderRoadmap();
+      });
+    });
+  }
+
   /* ---------- roadmap: journey swimlanes ---------- */
   function roadmapCard(item) {
-    const top = item.rank <= 3;
-    return '<div class="rm-card' + (top ? " top-pick" : "") + '" tabindex="0" ' +
+    const top = item.visible && item.rank <= 3 && item.rank > 0;
+    return '<div class="rm-card' + (top ? " top-pick" : "") + (item.visible ? "" : " rm-ghost") + '" tabindex="0" ' +
       'title="minutes ' + item.minutes + ' · retention ' + item.retention +
       ' · confidence ' + item.confidence + '% · cost ' + item.cost + '/5 · rank #' + item.rank + '">' +
       '<div class="rm-card-head">' +
@@ -592,9 +735,12 @@
   /* ---------- init ---------- */
   document.addEventListener("DOMContentLoaded", () => {
     initTheme();
+    renderBrief();
+    renderRewardLadder();
     renderFitStrips();
     renderScience();
     renderDiscovery();
+    initRoadmapFilters();
     renderPlanGrids();
     renderInputsTable();
     renderSimSliders();

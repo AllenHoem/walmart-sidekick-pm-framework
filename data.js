@@ -47,6 +47,17 @@ const BUILTIN_PLANS = [
     letter: "A",
     name: "Own the first 90 days",
     tagline: "Retention & onboarding first",
+    persona: "Maya · day 3 · overnight stocking",
+    signature: "From “nobody told me anything” to a guided first week — with a visible path by day 30.",
+    roi: {
+      headline: "Each point of 90-day new-hire retention ≈ ~$15M/yr in avoided replacement cost",
+      math: [
+        "~500K new store hires per year (illustrative)",
+        "+1 pt of 90-day retention ≈ ~5,000 fewer replacements",
+        "× ~$3,000 replacement cost each ≈ ~$15M/yr per point — pilot targets 2–3 pts"
+      ],
+      measurement: "Matched pilot vs. control stores (10–20 each), pre-registered north star, scale/kill at day 90."
+    },
     thesis: "The highest-leverage user of MyWalmart is the associate in their first 90 days. If the app wins their first two weeks, Walmart keeps them. The assets already exist — Academies, Live Better U (50+ certificates), internal promotion culture (310K promoted in two years) — but they're not orchestrated into the new associate's daily experience.",
     chooseIf: "Early-tenure attrition is concentrated and exit themes point to confusion and isolation (“didn't know what to do, didn't feel supported”) rather than pure wage competition.",
     northStar: "90-day new-hire retention rate (pilot vs. control stores)",
@@ -113,6 +124,17 @@ const BUILTIN_PLANS = [
     letter: "B",
     name: "Answer → Action",
     tagline: "Close the agentic gap",
+    persona: "Devon · mid-shift · front end",
+    signature: "Saturday's conflict is fixed before Devon notices — and three people are never interrupted.",
+    roi: {
+      headline: "One minute returned per associate per shift ≈ ~$100M/yr at scale",
+      math: [
+        "~1M store associates × 1 min/shift × ~$0.30/min loaded labor ≈ ~$300K/day",
+        "≈ $100M+/yr — and the top clusters waste far more than a minute",
+        "Plus deflection: fewer mid-task interruptions per team lead per shift"
+      ],
+      measurement: "Task-level instrumentation: answer→action conversion, deflection rate, time-to-resolution vs. baseline."
+    },
     thesis: "Sidekick is a great answer engine and a weak action engine. Every question that ends in “go find your team lead” costs three people time — the associate, the lead, and the customer standing there. Moving the top question-clusters from explaining to doing returns minutes to the floor and removes the daily friction that quietly drives quits.",
     chooseIf: "High question volume dead-ending into manual handoffs, and turnover themes centered on daily friction and feeling unsupported during work.",
     northStar: "Minutes of associate time returned per week",
@@ -178,6 +200,17 @@ const BUILTIN_PLANS = [
     letter: "C",
     name: "The Signal Engine",
     tagline: "Personalization & incentives platform",
+    persona: "Same nudge, two cohorts · Tulsa & Tacoma · overnight stock",
+    signature: "Tulsa gets a tuition nudge, Tacoma gets a recovery day — the engine learned, People teams audited.",
+    roi: {
+      headline: "Same incentive dollar, ~2× retention yield — and every future feature ships on the rails",
+      math: [
+        "Bandit targeting concentrates spend on the arms that work per cohort (holdout-proven)",
+        "Platform leverage: a new intervention is config, not code — weeks become days",
+        "Compounds A and B: their features become arms the engine keeps optimizing"
+      ],
+      measurement: "Permanent long-horizon holdouts; incentive ROI per arm; predicted-vs-actual lift with equity audits."
+    },
     thesis: "Walmart has 1.9M associates and treats them, product-wise, as one user. The durable advantage isn't any single feature — it's a platform that senses each cohort's state (frustrated? disengaged? ready to grow?) and responds with the right intervention: an alert, a reward, an FYI, a training module, a career nudge. A contextual Multi-Armed Bandit engine decides what works per cohort.",
     chooseIf: "Attrition drivers vary strongly by cohort, and leadership has appetite for a platform investment over point fixes.",
     northStar: "Predicted-vs-actual retention lift in bandit cohorts (with long-horizon holdouts)",
@@ -206,8 +239,9 @@ const BUILTIN_PLANS = [
         focus: "MVP: one score, two interventions",
         deliverables: [
           "Retention-risk score for new hires, live",
-          "Two intervention arms A/B'd: proactive check-in nudge vs. micro-recognition reward",
-          "Incentive compliance framework cleared with HR/legal (taxable wages, state wage rules, fairness review)"
+          "Two intervention arms A/B'd: proactive check-in nudge vs. real-reward choice",
+          "Reward catalog v1 (everyday tier): gift card / lunch / sweepstake entries / donation — payroll-integrated",
+          "Incentive compliance cleared with HR/legal: taxable wages, sweepstakes rules, fairness review"
         ]
       },
       {
@@ -237,6 +271,211 @@ const BUILTIN_PLANS = [
         "Targeted micro-training delivered in-chat where the trust score says it's needed"
       ]
     }
+  }
+];
+
+/* ---------- Storyboards: four surfaces per plan ----------
+   surface: alert | chat | reward | path | dead (chat styled as today's dead-end)
+   Every screen is illustrative dialogue — draft copy, not shipped UX. */
+const STORYBOARDS = {
+  "plan-a": {
+    intro: "Maya's first 90 days, across the four surfaces of the app.",
+    moments: [
+      {
+        surface: "alert", netnew: true, title: "Day 1 — the app speaks first",
+        caption: "The first shift starts guided, not lost.",
+        impact: ["improve", "retain"],
+        screen: {
+          clock: "6:55",
+          notifs: [
+            { head: "✦ MyWalmart · now", body: "First shift today, Maya 👋 Badge & locker first, then meet Dee — your buddy, aisle 12. I'll guide each step when you arrive." },
+            { head: "✦ MyWalmart · yesterday", body: "Your week, mapped: 3 short trainings scheduled in slow windows — nothing on your busiest night." }
+          ]
+        }
+      },
+      {
+        surface: "chat", netnew: true, title: "Shift 1 — zero-tenure vocabulary",
+        caption: "Plain language, nothing assumed, no question too basic.",
+        impact: ["improve", "retain"],
+        screen: {
+          items: [
+            { who: "bot", text: "Locker done ✓. Next: Dee is expecting you at aisle 12 — want the walking route?" },
+            { who: "me", text: "Yes please. Also… what's a “zone”?" },
+            { who: "bot", text: "Your assigned section for the night. Yours is GM-3 (aisles 10–14). Dee will walk the first pass with you." },
+            { who: "buttons", buttons: [{ label: "Show route", solid: true }, { label: "Who's my lead?" }] }
+          ]
+        }
+      },
+      {
+        surface: "reward", netnew: true, title: "Week 1 — real reward, her choice",
+        caption: "Rewarded from week one — chosen, not assigned. Skipping a training never costs anything: safe to learn.",
+        impact: ["retain"],
+        screen: {
+          emoji: "🌟", cardTitle: "Week-1 streak complete",
+          cardBody: "Five shifts, all trainings done. Pick your reward:",
+          choices: ["💳 $15 gift card", "🍽 Free lunch this week", "🎟 5 stock-sweepstake entries", "💚 Donate $15 to a cause you choose"],
+          notif: "Dee and your lead get a heads-up — so it's said out loud, too."
+        }
+      },
+      {
+        surface: "path", netnew: true, title: "Day 30 — a visible road",
+        caption: "Day 90 becomes a milestone, not a cliff — and rest is part of the pace.",
+        impact: ["retain", "grow"],
+        screen: {
+          pathTitle: "Maya → 90 days & beyond", progress: 30,
+          steps: [
+            { state: "done", text: "Days 1–7: guided first week" },
+            { state: "done", text: "Week 2: first solo zone" },
+            { state: "now", text: "Day-30 check-in — tomorrow" },
+            { state: "todo", text: "Day 60: cross-training choice" },
+            { state: "todo", text: "Day 90: milestone + path picker (freight · front end · LBU)" }
+          ],
+          notif: "💚 On pace — and your schedule has kept two recovery days a week."
+        }
+      }
+    ]
+  },
+  "plan-b": {
+    intro: "Devon's schedule conflict — today's dead-end vs. the action agent, then where closed loops lead.",
+    moments: [
+      {
+        surface: "dead", netnew: false, title: "Today — the dead-end",
+        caption: "A right answer that still costs three people time.",
+        impact: [],
+        screen: {
+          items: [
+            { who: "me", text: "I'm scheduled Saturday but I have a class conflict — what do I do?" },
+            { who: "bot", text: "You can request a shift swap! Ask your team lead to start a swap in the scheduling system." },
+            { who: "sys", text: "Conversation ends. Devon walks the floor looking for the lead. The lead stops mid-task. A customer waits." }
+          ]
+        }
+      },
+      {
+        surface: "alert", netnew: true, title: "With Plan B — detected first",
+        caption: "The conflict is found before Devon notices — with the fix attached.",
+        impact: ["improve"],
+        screen: {
+          clock: "6:15",
+          notifs: [
+            { head: "✦ MyWalmart · now", body: "Heads-up: your Saturday shift conflicts with your class schedule. I can fix it — open when ready." },
+            { head: "✦ MyWalmart · 5:40 AM", body: "Open shift, your skills: Sunday freight needs one more. Opt-in challenge — reward's your pick." }
+          ]
+        }
+      },
+      {
+        surface: "chat", netnew: true, title: "The loop closes in-chat",
+        caption: "Detect → propose → initiate → approve → confirm. Nobody chased anybody.",
+        impact: ["improve", "retain"],
+        screen: {
+          items: [
+            { who: "me", text: "Fix Saturday please — and I'll take the Sunday freight challenge." },
+            { who: "bot", text: "On it. Jordan and Sam are eligible and under 40 hrs — swap proposed to both. Your lead approves with one tap." },
+            { who: "sys", text: "✓ Swap confirmed 2 hours later. Sunday freight added. Strictest grounding tier: scheduling actions double-check against the system of record." }
+          ]
+        }
+      },
+      {
+        surface: "reward", netnew: true, title: "Drive, rewarded in real currency",
+        caption: "Volunteering is worth real money — and streaks reach payroll.",
+        impact: ["retain", "grow"],
+        screen: {
+          emoji: "⚡", cardTitle: "Challenge complete: Sunday freight",
+          cardBody: "You volunteered, you delivered — the store filled 100% of weekend shifts. Pick your reward:",
+          choices: ["💳 $15 gift card", "🍽 Free lunch this week", "🎟 5 stock-sweepstake entries", "💚 Donate $15 to a cause you choose"],
+          notif: "🏆 Driven streak ×6 → auto-nominated for quarterly bonus + merit review. Humans decide; the app brings the evidence."
+        }
+      }
+    ]
+  },
+  "plan-c": {
+    intro: "The platform story: the same moment lands differently per cohort — visibly, auditable, by choice.",
+    moments: [
+      {
+        surface: "alert", netnew: true, title: "Same moment, two cohorts",
+        caption: "The bandit learned what lands per cohort — no one had to hypothesize why.",
+        impact: ["retain", "grow"],
+        screen: {
+          clock: "22:10",
+          notifs: [
+            { head: "✦ Tulsa · overnight stock · 8 mo", body: "You're 2 certificates from team-lead eligibility — LBU is free. Want tonight's slow window blocked for module 1?" },
+            { head: "✦ Tacoma · overnight stock · 8 mo", body: "Four close-shifts in a row. Thursday has coverage — take it as a recovery day? One tap." }
+          ]
+        }
+      },
+      {
+        surface: "chat", netnew: true, title: "Radical transparency",
+        caption: "Signals framed as growth an associate can see and control — never a hidden risk label.",
+        impact: ["retain"],
+        screen: {
+          items: [
+            { who: "me", text: "Why am I seeing this suggestion?" },
+            { who: "bot", text: "Your cohort — overnight stockers, 6–12 months — responds best to growth nudges. That's a learned pattern, reviewed by People teams, and you can see everything I use." },
+            { who: "buttons", buttons: [{ label: "See my signals", solid: true }, { label: "Change what I get" }] }
+          ]
+        }
+      },
+      {
+        surface: "reward", netnew: true, title: "Choice is the training data",
+        caption: "Every reward pick tunes the engine per cohort — equity-audited every quarter.",
+        impact: ["retain"],
+        screen: {
+          emoji: "🎯", cardTitle: "Your pick teaches the engine",
+          cardBody: "Cash, lunch, stock upside, or giving — your choice shapes what your cohort sees next. Pick your reward:",
+          choices: ["💳 $15 gift card", "🍽 Free lunch this week", "🎟 5 stock-sweepstake entries", "💚 Donate $15 to a cause you choose"],
+          notif: "Exposure floors guarantee no cohort is starved of a beneficial arm while the engine learns."
+        }
+      },
+      {
+        surface: "path", netnew: true, title: "Next best step, per associate",
+        caption: "A platform that gets smarter for every associate — with policies humans can read.",
+        impact: ["grow"],
+        screen: {
+          pathTitle: "Your next best step", progress: 55,
+          steps: [
+            { state: "done", text: "Signals → cohort scores (five + wellbeing)" },
+            { state: "done", text: "Bandit finds what works for your cohort" },
+            { state: "now", text: "Your arm: LBU fast-track — module 1 of 4" },
+            { state: "todo", text: "Team-lead pipeline (310K promoted in 2 yrs)" },
+            { state: "todo", text: "Store-director track via Academies" }
+          ],
+          notif: "Every learned policy exports human-readable: “cohort X responds best to Y.”"
+        }
+      }
+    ]
+  }
+};
+
+/* ---------- The Brief (executive landing) ---------- */
+const BRIEF_FRAMES = [
+  {
+    kicker: "1 · The problem",
+    big: "Attrition concentrates in the first 90 days",
+    support: "Turnover is the burning problem — and every early quit costs ~$3K to replace.",
+    href: "#/plans/plan-a", link: "the retention bet"
+  },
+  {
+    kicker: "2 · The insight",
+    big: "3M questions a day — too many end in “go find your team lead”",
+    support: "Sidekick is a great answer engine and a weak action engine. That gap is minutes, money, and morale.",
+    href: "#/plans/plan-b", link: "the action bet"
+  },
+  {
+    kicker: "3 · Three bets, one decision rule",
+    big: "A · B · C — the discovery data picks the entry",
+    support: "Onboarding retention · Answer→Action · the Signal Engine. Each declares the evidence that would justify it.",
+    href: "#/plans", link: "compare the strategies"
+  },
+  {
+    kicker: "4 · The POV",
+    big: "Rejuvenation & rewards drive retention & results",
+    support: "Sequence A → C with B woven through: a visible retention win in one quarter that becomes the platform that compounds.",
+    href: "#/engine", link: "see the engine"
+  },
+  {
+    kicker: "5 · The ask",
+    big: "2 weeks · 20 stores · 1 DS pod",
+    support: "A discovery sprint, a matched pilot footprint, and the team to prove it — scale/kill decision at day 90.",
+    href: "#/roadmap", link: "the 90-day roadmap"
   }
 ];
 
@@ -277,6 +516,11 @@ const SCORES = [
     key: "trust",
     label: "Trust score",
     desc: "Thumbs-down rate, correction rate, reliance on workarounds after using Sidekick"
+  },
+  {
+    key: "wellbeing",
+    label: "Wellbeing score",
+    desc: "Operational rest/load signals only — schedule volatility, overtime density, break patterns, callout trends. Never health data: the app offers resources, it never diagnoses."
   }
 ];
 
@@ -302,7 +546,7 @@ const INTERVENTIONS = [
     id: "rewards",
     pattern: "Retention-risk ↑",
     family: "Rewards & recognition",
-    example: "Micro-incentives for early/prompt action on store needs; manager-visible recognition. (Every incentive arm ships with HR/legal review and an equity audit.)",
+    example: "Real rewards, associate's choice — gift card, free lunch, stock-sweepstake entries, donation to a cause. Streaks feed bonus + merit nominations: the app nominates with evidence, humans decide. Every arm is HR/legal-cleared and equity-audited.",
     modes: ["proactive"],
     fires: s => s.retention >= 60
   },
@@ -321,16 +565,47 @@ const INTERVENTIONS = [
     example: "Transparent “what Sidekick can/can't do,” targeted micro-training, grounding fixes.",
     modes: ["reactive", "conversational"],
     fires: s => s.trust <= 40
+  },
+  {
+    id: "rejuvenation",
+    pattern: "Wellbeing ↓",
+    family: "Rejuvenation",
+    example: "Recovery-day nudges when close-shift streaks stack up, break protection, wellness resources — offered, never prescribed, and never framed as a performance flag.",
+    modes: ["proactive"],
+    fires: s => s.wellbeing <= 40
   }
 ];
 
 const SIM_PRESETS = {
-  struggling: { tenure: "new", friction: 55, engagement: 20, retention: 75, growth: 25, trust: 55 },
-  friction:   { tenure: "mid", friction: 85, engagement: 60, retention: 45, growth: 40, trust: 60 },
-  rising:     { tenure: "tenured", friction: 25, engagement: 80, retention: 15, growth: 85, trust: 75 },
-  skeptical:  { tenure: "mid", friction: 60, engagement: 35, retention: 50, growth: 30, trust: 20 },
-  healthy:    { tenure: "tenured", friction: 25, engagement: 70, retention: 20, growth: 45, trust: 80 }
+  struggling: { tenure: "new", friction: 55, engagement: 20, retention: 75, growth: 25, trust: 55, wellbeing: 55 },
+  friction:   { tenure: "mid", friction: 85, engagement: 60, retention: 45, growth: 40, trust: 60, wellbeing: 60 },
+  empty:      { tenure: "mid", friction: 45, engagement: 55, retention: 50, growth: 40, trust: 65, wellbeing: 20 },
+  rising:     { tenure: "tenured", friction: 25, engagement: 80, retention: 15, growth: 85, trust: 75, wellbeing: 75 },
+  skeptical:  { tenure: "mid", friction: 60, engagement: 35, retention: 50, growth: 30, trust: 20, wellbeing: 55 },
+  healthy:    { tenure: "tenured", friction: 25, engagement: 70, retention: 20, growth: 45, trust: 80, wellbeing: 85 }
 };
+
+/* R4 reward ladder — real rewards, three grant mechanics */
+const REWARD_LADDER = [
+  {
+    tier: "Everyday",
+    grant: "System-grantable · instant",
+    items: "Free lunch · small gift card · stock-sweepstake entries · donation to a cause you choose",
+    note: "Associate picks — and every choice teaches the bandit what motivates each cohort."
+  },
+  {
+    tier: "Quarterly",
+    grant: "Manager/HR loop · fed by streaks",
+    items: "Bonus · merit-increase nomination · larger stock sweepstake",
+    note: "The app nominates with evidence; humans decide in existing HR calibration."
+  },
+  {
+    tier: "Career",
+    grant: "HR pipeline · the growth path itself",
+    items: "Stock grants · team-lead track via Academies/LBU (310K promoted in 2 yrs)",
+    note: "The reward is the path — surfaced as concrete next steps, never vague promises."
+  }
+];
 
 const GUARDRAILS = [
   {
@@ -382,7 +657,11 @@ const ROADMAP_ITEMS = [
   { name: "Schedule-conflict action agent", sub: "Plan B cluster #1 — full loop", plan: "B", lane: "everyday", horizon: "h2", modes: ["proactive", "conversational"], minutes: 90, retention: 55, confidence: 80, cost: 4 },
   { name: "Retention-risk score + 2 arms", sub: "Plan C MVP · nudge vs. reward", plan: "C", lane: "platform", horizon: "h2", modes: ["proactive", "reactive"], minutes: 20, retention: 80, confidence: 55, cost: 4 },
 
+  { name: "Wellbeing score (cohort)", sub: "operational signals only — never health data", plan: "C", lane: "platform", horizon: "h2", modes: ["reactive"], minutes: 5, retention: 55, confidence: 50, cost: 3 },
+  { name: "Reward catalog v1 — everyday tier", sub: "gift card · lunch · sweepstake · donation", plan: "C", lane: "growth", horizon: "h2", modes: ["proactive"], minutes: 5, retention: 60, confidence: 55, cost: 2 },
+
   { name: "Micro-recognition mechanics", sub: "existing gamification rails", plan: "A", lane: "first90", horizon: "h3", modes: ["proactive"], minutes: 10, retention: 50, confidence: 50, cost: 1 },
+  { name: "Recovery-day nudges (rejuvenation)", sub: "wellbeing ↓ cohorts, budget-capped", plan: "C", lane: "everyday", horizon: "h3", modes: ["proactive"], minutes: 10, retention: 55, confidence: 45, cost: 2 },
   { name: "Time-off action agent", sub: "Plan B cluster #2", plan: "B", lane: "everyday", horizon: "h3", modes: ["proactive", "conversational"], minutes: 60, retention: 40, confidence: 65, cost: 3 },
   { name: "Trust transparency + micro-training", sub: "low-trust cohorts", plan: "C", lane: "everyday", horizon: "h3", modes: ["reactive", "conversational"], minutes: 10, retention: 35, confidence: 50, cost: 2 },
   { name: "Career-pathing nudges (LBU)", sub: "growth-readiness cohorts", plan: "C", lane: "growth", horizon: "h3", modes: ["proactive", "conversational"], minutes: 15, retention: 60, confidence: 60, cost: 2 },
@@ -420,14 +699,16 @@ const SCIENCE = {
     body: [
       "Each plan is a falsifiable bet, not a preference: it declares up front what the discovery data would have to show for it to be the right entry point (“choose this if…”). That's a decision rule — the sprint output selects the plan, not conviction.",
       "All three share one schema: thesis → evidence trigger → 30/60/90 phases → north star → risks → experience modes. Identical structure is what makes them comparable in roadmap scoring and auditable in Coverage — and it's the same schema the Builder enforces on new alternatives.",
-      "Every plan is also an experiment: pilot vs. control stores, a scale/kill decision at day 90, and a north star that a CFO can price (e.g., cost per replaced associate vs. pilot retention lift)."
+      "Every plan is also an experiment with a named measurement design: Plan A runs matched pilot vs. control stores with a pre-registered north star; Plan B instruments the task level (answer→action conversion, deflection, time-to-resolution); Plan C keeps permanent long-horizon holdouts. All three end in a scale/kill decision priced in CFO terms.",
+      "The ROI figures on each plan page are deliberately simple, order-of-magnitude models with stated assumptions — built to be interrogated in the room, not to survive an audit. The pilot exists to replace them with measured numbers."
     ]
   },
   scores: {
     title: "The science: cohort scoring and the decision layer",
     body: [
       "Scores are computed per cohort (role × shift × region × tenure band), never per individual. Cohorts give larger samples per estimate — so scores are statistically stable — and they're the right privacy posture: the engine never carries a hidden label on a person.",
-      "The decision layer in this simulator is a transparent threshold policy — exactly what runs on this page: <code>friction ≥ 65</code>, <code>engagement ≤ 40 AND tenure &lt; 90d</code>, <code>retention-risk ≥ 60</code>, <code>growth-readiness ≥ 60</code>, <code>trust ≤ 40</code>. In production the thresholds are set from score distributions (e.g., top-quartile friction), but the policy stays human-readable on purpose: a People team can audit every trigger.",
+      "The decision layer in this simulator is a transparent threshold policy — exactly what runs on this page: <code>friction ≥ 65</code>, <code>engagement ≤ 40 AND tenure &lt; 90d</code>, <code>retention-risk ≥ 60</code>, <code>growth-readiness ≥ 60</code>, <code>trust ≤ 40</code>, <code>wellbeing ≤ 40</code>. In production the thresholds are set from score distributions (e.g., top-quartile friction), but the policy stays human-readable on purpose: a People team can audit every trigger.",
+      "The wellbeing score is deliberately narrow: it reads <em>operational</em> signals — schedule volatility, overtime density, break patterns, callout trends — never health data. The app offers resources and recovery options; it never infers or records a health status.",
       "Multiple families can fire at once — a struggling new hire trips both onboarding and rewards. The intervention budget cap (Layer 4) is what arbitrates: the engine competes for scarce attention rather than sending everything."
     ]
   },
@@ -436,7 +717,8 @@ const SCIENCE = {
     body: [
       "For each cohort-context and each intervention arm, the bandit keeps a probability distribution over “how well does this arm work here?” To pick an arm it <em>samples</em> from each distribution and plays the winner — arms it's unsure about occasionally win the sample, so exploration happens automatically, but persistently weak arms get sampled less and less. That's the whole trick: exploration is proportional to uncertainty.",
       "The reward fed to the bandit is a leading indicator (e.g., week-4 engagement) that is itself validated against 90-day retention in permanent holdout groups — because a bandit optimizes exactly what you give it, and “clicked the nudge” is not the business goal.",
-      "Fairness floors are hard constraints, not preferences: every arm keeps a minimum exposure per cohort so the learner can't silently starve a group of a beneficial intervention, and realized rewards are audited for equity across cohorts."
+      "Reward <em>type</em> (cash, food, stock upside, giving) joins the context as its own factored dimension — the associate's own choices are the labels. Factoring intervention-family × reward-type keeps the arm space tractable instead of exploding combinatorially; start with reward-type learning inside the incentive family only.",
+      "Fairness floors are hard constraints, not preferences: every arm keeps a minimum exposure per cohort so the learner can't silently starve a group of a beneficial intervention, and realized rewards are audited for equity across cohorts — including the audit that rewarding drive never quietly disadvantages the associate who simply works their shift well."
     ]
   },
   roadmap: {

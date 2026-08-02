@@ -20,12 +20,13 @@
       </span>
     </a>
     <nav class="site-nav" aria-label="Primary">
-      <a href="#/overview" data-route="overview">Overview</a>
+      <a href="#/overview" data-route="overview">The Brief</a>
       <a href="#/plans" data-route="plans">Strategies</a>
-      <a href="#/engine" data-route="engine">Signal Engine</a>
       <a href="#/roadmap" data-route="roadmap">Roadmap</a>
-      <a href="#/builder" data-route="builder">Builder</a>
-      <a href="#/coverage" data-route="coverage">Coverage</a>
+      <a href="#/engine" data-route="engine">Signal Engine</a>
+      <span class="nav-divider" aria-hidden="true"></span>
+      <a href="#/builder" data-route="builder" class="nav-tool">Builder</a>
+      <a href="#/coverage" data-route="coverage" class="nav-tool">Coverage</a>
     </nav>
     <button id="theme-toggle" class="theme-toggle" type="button" aria-label="Toggle dark mode" title="Toggle light / dark">
       <span class="theme-icon" aria-hidden="true">◐</span>
@@ -34,57 +35,37 @@
 </header>
 
 <main id="app" tabindex="-1">
-  <!-- ===================== OVERVIEW ===================== -->
+  <!-- ===================== THE BRIEF ===================== -->
   <section id="view-overview" class="view" hidden>
-    <div class="hero">
-      <p class="eyebrow">A Principal PM operating framework · Allen Hoem</p>
-      <h1>Every plan starts with evidence.<br>The framework picks the bet.</h1>
-      <p class="hero-sub">
-        Three pre-built 90-day strategies for MyWalmart / Sidekick — plus a builder to create your own.
-        Every strategy is expressed in the same three experience modes, so plans stay comparable
-        and the roadmap stays evidence-driven.
-      </p>
-      <div class="mode-legend" role="list" aria-label="The three experience modes">
-        <div class="mode-pill mode-proactive" role="listitem">
-          <span class="mode-dot" aria-hidden="true"></span>
-          <div><strong>Proactive</strong><small>The system acts first — nudges, alerts, predictions, interventions</small></div>
-        </div>
-        <div class="mode-pill mode-reactive" role="listitem">
-          <span class="mode-dot" aria-hidden="true"></span>
-          <div><strong>Reactive intelligence</strong><small>Insights on demand — scores, dashboards, funnels, opportunity ranking</small></div>
-        </div>
-        <div class="mode-pill mode-conversational" role="listitem">
-          <span class="mode-dot" aria-hidden="true"></span>
-          <div><strong>Conversational</strong><small>Sidekick dialogue — grounded answers and agentic action loops</small></div>
-        </div>
-      </div>
-      <div class="hero-actions">
-        <a class="btn btn-primary" href="#/plans">Explore the three strategies</a>
-        <a class="btn btn-ghost" href="#/builder">Build your own</a>
-      </div>
+    <div class="brief-head">
+      <p class="eyebrow">The 60-second brief · Allen Hoem · Principal PM candidate</p>
+      <h1>Rejuvenation &amp; rewards drive retention &amp; results.</h1>
+      <p class="section-sub">The whole POV in five frames. Everything deeper — strategies, roadmap, the engine — is one click away.</p>
+    </div>
+
+    <div id="brief-frames" class="brief-frames"></div>
+
+    <div class="r4 section" aria-label="The R4 equation">
+      <div class="r4-term"><strong>Rejuvenation</strong><small>mental &amp; physical health · safe to fail &amp; learn · safe at work &amp; in community</small></div>
+      <div class="r4-op" aria-hidden="true">+</div>
+      <div class="r4-term"><strong>Rewards</strong><small>real currency for driven, proactive, challenge-seeking behavior</small></div>
+      <div class="r4-op" aria-hidden="true">→</div>
+      <div class="r4-term out"><strong>Retention</strong><small>past 90 days — and past 5 years</small></div>
+      <div class="r4-op" aria-hidden="true">+</div>
+      <div class="r4-term out"><strong>Results</strong><small>effective associates, staffed shifts, served customers</small></div>
     </div>
 
     <div class="section">
-      <h2>The shared foundation — Weeks 1–2 discovery sprint</h2>
-      <p class="section-sub">Regardless of which plan runs, the first two weeks are identical. Click each step for the detail and the question it answers.</p>
+      <h2>What each bet is worth</h2>
+      <p class="section-sub">Order-of-magnitude models with stated assumptions — built to be interrogated, then replaced by pilot data.</p>
+      <div id="brief-roi" class="roi-strip"></div>
+    </div>
+
+    <div class="section">
+      <h2>The evidence plan — Weeks 1–2 discovery sprint</h2>
+      <p class="section-sub">Every plan starts with the same two weeks. Click each step.</p>
       <div id="discovery-track" class="discovery-track"></div>
       <div data-science="overview"></div>
-      <aside class="callout">
-        <strong>Why this order matters:</strong> associate turnover is the burning problem, and retail attrition
-        concentrates brutally in the first 90 days of employment. The discovery sprint answers one question with
-        evidence: <em>what role does the app actually play in whether a new associate stays?</em>
-      </aside>
-    </div>
-
-    <div class="section">
-      <h2>Three bets, one strategy</h2>
-      <p class="section-sub">
-        The plans aren't mutually exclusive — they're sequenced differently. The honest recommendation is
-        <strong>A → C with B woven through</strong>: Plan A delivers a visible retention win in one quarter and is itself
-        the first use case of the Signal Engine; Plan C is where it compounds; Plan B's action agents become the
-        interventions the engine deploys.
-      </p>
-      <div id="overview-plan-cards" class="plan-grid"></div>
     </div>
 
     <div class="section">
@@ -106,9 +87,23 @@
     <div class="view-head">
       <h1>Strategic plans</h1>
       <p class="section-sub">
-        Three pre-built bets, each earned from the same discovery sprint — plus any alternatives you build.
-        Every plan declares its coverage across the three experience modes.
+        Three distinct bets — the new hire (A), everyone's daily friction (B), the platform that learns (C) —
+        sequenced <strong>A → C with B woven through</strong>, plus any alternatives you build.
       </p>
+      <div class="mode-legend compact" role="list" aria-label="The three experience modes">
+        <div class="mode-pill mode-proactive" role="listitem">
+          <span class="mode-dot" aria-hidden="true"></span>
+          <div><strong>Proactive</strong><small>the app acts first</small></div>
+        </div>
+        <div class="mode-pill mode-reactive" role="listitem">
+          <span class="mode-dot" aria-hidden="true"></span>
+          <div><strong>Reactive intelligence</strong><small>insight on demand</small></div>
+        </div>
+        <div class="mode-pill mode-conversational" role="listitem">
+          <span class="mode-dot" aria-hidden="true"></span>
+          <div><strong>Conversational</strong><small>answers &amp; action loops</small></div>
+        </div>
+      </div>
       <div data-fit="plans"></div>
     </div>
     <div id="plan-grid" class="plan-grid"></div>
@@ -126,8 +121,7 @@
     <div class="view-head">
       <h1>The Signal Engine</h1>
       <p class="section-sub">
-        The signals-to-roadmap framework that makes the plans comparable and the roadmap evidence-driven.
-        Five layers — from raw data to a ranked roadmap.
+        Senses each cohort's state. Responds with the right intervention. Learns what works.
       </p>
       <div data-fit="engine"></div>
     </div>
@@ -148,9 +142,8 @@
     <div class="section" id="layer-2">
       <h2><span class="layer-chip">Layer 2 → 3</span> Cohort scores → interventions <span class="interactive-tag">interactive</span></h2>
       <p class="section-sub">
-        Scores are computed per <strong>cohort</strong> (role × shift × region × tenure band), never per individual —
-        statistically saner, and the right privacy posture. Move the sliders to simulate a cohort’s state and watch
-        the decision layer select intervention families.
+        Six scores per <strong>cohort</strong> (role × shift × region × tenure) — never per individual.
+        Move the sliders; watch the decision layer pick intervention families.
       </p>
       <div class="simulator">
         <div class="sim-controls">
@@ -167,6 +160,7 @@
             <span class="presets-label">Presets:</span>
             <button class="chip-btn" data-preset="struggling">Struggling new hire</button>
             <button class="chip-btn" data-preset="friction">High-friction cohort</button>
+            <button class="chip-btn" data-preset="empty">Running on empty</button>
             <button class="chip-btn" data-preset="rising">Rising star</button>
             <button class="chip-btn" data-preset="skeptical">Sidekick skeptic</button>
             <button class="chip-btn" data-preset="healthy">Healthy baseline</button>
@@ -178,10 +172,15 @@
           <p class="footnote" id="sim-empty" hidden>No thresholds tripped — this cohort reads healthy. The engine stays quiet: interventions compete for a scarce attention budget.</p>
         </div>
       </div>
+      <div class="section-sub" style="margin-top:2rem"></div>
+      <h3 class="ladder-title">The reward ladder — real rewards, three grant mechanics</h3>
+      <div id="reward-ladder" class="ladder-grid"></div>
       <aside class="callout callout-warn">
-        <strong>Incentive compliance guardrail:</strong> gift cards to employees are taxable wages, incentive fairness
-        across protected classes must be auditable, and reward mechanics must never read as pay-for-surveillance.
-        Every incentive arm ships with an HR/legal review and an equity audit.
+        <strong>Compliance, said out loud:</strong> gift cards, bonuses, and stock are <em>taxable compensation</em> —
+        payroll integration, not an app feature. Sweepstakes carry their own legal regime (no-consideration entry,
+        state rules). Merit and promotion nominations flow through existing HR calibration — the app nominates with
+        evidence, humans decide. Every tier ships with an equity audit, and reward mechanics must never read as
+        pay-for-surveillance.
       </aside>
       <div data-science="scores"></div>
     </div>
@@ -226,14 +225,26 @@
     <div class="view-head">
       <h1>Roadmap <span class="interactive-tag">interactive</span></h1>
       <p class="section-sub">
-        Capabilities from all three plans, organized two ways at once: <strong>swimlanes</strong> map each capability
-        to the journey milestone it serves, columns map it to a 30/60/90 horizon, and the opportunity score decides
-        priority within a cell. Adjust the weights — scores and the ranked list recompute everywhere.
+        Swimlanes place every capability on the journey milestone it serves; columns are 30/60/90 horizons;
+        the opportunity score sets priority. Filter to one strategy to read its delivery story clean.
       </p>
       <div data-fit="roadmap"></div>
     </div>
 
     <div class="roadmap-controls">
+      <label class="filter-label">Strategy
+        <select id="rm-plan-filter">
+          <option value="all">All strategies</option>
+          <option value="A">Plan A — Own the first 90 days</option>
+          <option value="B">Plan B — Answer → Action</option>
+          <option value="C">Plan C — The Signal Engine</option>
+        </select>
+      </label>
+      <div class="mode-filter" id="rm-mode-filter" role="group" aria-label="Filter by experience mode">
+        <button class="chip-btn mode-chip-btn active" data-mode="proactive"><span class="mode-dot" style="background:var(--mode-proactive)"></span>Proactive</button>
+        <button class="chip-btn mode-chip-btn active" data-mode="reactive"><span class="mode-dot" style="background:var(--mode-reactive)"></span>Reactive</button>
+        <button class="chip-btn mode-chip-btn active" data-mode="conversational"><span class="mode-dot" style="background:var(--mode-conversational)"></span>Conversational</button>
+      </div>
       <label class="weight-label">Weight: minutes returned
         <input type="range" id="w-minutes" min="0" max="100" value="50">
         <output id="w-minutes-out">50%</output>
