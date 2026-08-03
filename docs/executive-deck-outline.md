@@ -1,0 +1,323 @@
+# Sidekick 90-day deck: slide outline
+
+Rebuilt from source (`data.js`, `index.html`), not from the existing site narrative. Structure follows `docs/executive-presentation-playbook.md`: recommendation on slide 1, 10 slides to the decision, unlimited appendix, every headline a full-sentence claim.
+
+## Audience and running order
+
+Walmart leadership panel: CFO or finance partner, CTO and engineering leads, GM or hiring principal, HR and legal. Read time 12 minutes, presented in 20 with 25 for questions. Pre-read sent 24 hours ahead so the room opens on objections, not a walkthrough.
+
+Every number below is an order-of-magnitude model with stated assumptions, built to be interrogated and then replaced by pilot data.
+
+## Layout archetypes
+
+Eight repeating layouts. Each slide below names the one it uses.
+
+```
+L1 CLAIM + PROOF TILES        L2 SPLIT: VISUAL | CLAIMS      L3 OPTIONS TABLE
++---------------------------+ +---------------------------+  +---------------------------+
+| HEADLINE CLAIM (1 line)   | | HEADLINE CLAIM            |  | HEADLINE CLAIM            |
+|                           | +-------------+-------------+  +----+------+------+-------+
+| +------+ +------+ +-----+ | |             | > claim 1   |  |    |  A   |  B   |   C   |
+| | $15M | | 500K | | 3K  | | |   CHART     | > claim 2   |  |ROI |      |      |       |
+| |  /pt | | hires| | ea. | | |   or        | > claim 3   |  |Star|      |      |       |
+| +------+ +------+ +-----+ | |   DIAGRAM   |             |  |Trig|      |      |       |
+|                           | |             | assumption: |  |Risk|      |      |       |
+| one-line so-what          | |             | ...         |  +----+------+------+-------+
++---------------------------+ +-------------+-------------+  | do-nothing priced: $1.5B  |
+                                                             +---------------------------+
+
+L4 SEQUENCE / TIMELINE        L5 STORYBOARD (4 SURFACES)     L6 STACKED LAYERS
++---------------------------+ +---------------------------+  +---------------------------+
+| HEADLINE CLAIM            | | HEADLINE CLAIM            |  | HEADLINE CLAIM            |
+|  d1-30    d31-60   d61-90 | | +----+ +----+ +----+ +---+|  | +-----------------------+ |
+| [==A==][====A====][==A==] | | |6:55| |chat| | *  | |>>>||  | | L5 roadmap surface    | |
+|    [==B==][====B====]     | | |noti| |    | |rwd | |pat||  | | L4 bandit learning    | |
+|       [==C==][====C====]  | | +----+ +----+ +----+ +---+|  | | L3 decision layer     | |
+| gate: day-90 scale/kill   | | day 1   shift1  wk 1  d30 |  | | L2 cohort scores      | |
++---------------------------+ +---------------------------+  | | L1 data inputs        | |
+                                                             | +-----------------------+ |
+L7 RISK REGISTER              L8 DECISION ASK                +---------------------------+
++---------------------------+ +---------------------------+
+| HEADLINE CLAIM            | | HEADLINE CLAIM            |
++-------+------+-----+------+ | +-----------------------+ |
+| risk  | owner|trig | mitig| | | ASK: what, who, when  | |
++-------+------+-----+------+ | | amount / footprint    | |
+|       |      |     |      | | +-----------------------+ |
++-------+------+-----+------+ | fallback if declined: ... |
+                              | kill criteria: ...        |
+                              +---------------------------+
+```
+
+## Main path: 10 slides to a decision
+
+### Slide 1. Approve 2 weeks, 20 pilot stores, and 1 data-science pod to chase 2 to 3 points of 90-day retention
+
+Layout L1. Opens on the recommendation, not an agenda.
+
+```
++------------------------------------------------------------------+
+| Approve 2 weeks, 20 pilot stores, 1 DS pod.                      |
+| Target: 2 to 3 points of 90-day new-hire retention.              |
+|                                                                  |
+|   +-------------+  +-------------+  +-------------+              |
+|   |   ~$15M     |  |  $30-45M    |  |   day 90    |              |
+|   | per point   |  | if we hit   |  | scale/kill  |              |
+|   | per year    |  | 2 to 3 pts  |  | pre-set     |              |
+|   +-------------+  +-------------+  +-------------+              |
+|                                                                  |
+| Plan A first. B and C follow on evidence, not on preference.     |
++------------------------------------------------------------------+
+```
+
+Body: one sentence naming the bet (own the first 90 days), one naming the cost, one naming the exit. Assumption line visible: 500K new store hires per year, $3K replacement cost, illustrative.
+
+### Slide 2. Replacement spend runs about $1.5B a year, and the losses concentrate in weeks 1 to 6
+
+Layout L2. Situation and complication in one slide. This is the do-nothing price.
+
+```
++------------------------------------------------------------------+
+| Replacement spend runs ~$1.5B/yr. It concentrates in weeks 1-6.  |
++-------------------------------+----------------------------------+
+|  survival curve, new hires    | > 1.9M associates. ~500K new     |
+| 100%|**                       |   store hires a year.            |
+|     |  ***                    | > ~$3,000 to replace each one.   |
+|     |     ****                | > Exit themes: confusion and     |
+|     |         ******          |   isolation, not only wage.      |
+|     +---------------------    | > Assets exist and go unused:    |
+|      d7  d30  d60  d90        |   Academies, 50+ LBU certs,      |
+|      ^^^^^^                   |   310K promoted in 2 years.      |
+|      steepest drop            |                                  |
+|                               | Illustrative model. Sprint       |
+|                               | replaces it with real curves.    |
++-------------------------------+----------------------------------+
+```
+
+Answers the CFO question before it is asked: doing nothing is not free, it costs about $1.5B a year at these assumptions.
+
+### Slide 3. Sidekick answers 3M questions a day and can act on almost none of them
+
+Layout L2, with the dead-end conversation as the visual. Devon, front end, mid-shift.
+
+```
++------------------------------------------------------------------+
+| Sidekick answers 3M questions a day. It can act on almost none.  |
++-------------------------------+----------------------------------+
+| ME: Scheduled Saturday, class | > A correct answer that still    |
+|     conflict. What do I do?   |   costs three people time:       |
+| BOT: You can request a swap!  |   associate, lead, customer.     |
+|     Ask your team lead.       | > Every handoff is minutes off   |
+| ---- conversation ends ----   |   the floor and one more reason  |
+| Devon walks the floor.        |   the day feels unsupported.     |
+| Lead stops mid-task.          | > 1 minute per associate per     |
+| Customer waits.               |   shift is worth ~$100M/yr.      |
++-------------------------------+----------------------------------+
+```
+
+Assumption line: 1M store associates, 1 minute per shift, $0.30 per minute loaded labor, about $300K a day.
+
+### Slide 4. Rejuvenation and rewards drive retention and results
+
+Layout L1 with an equation strip. The point of view slide, and the one that separates this from a feature list.
+
+```
++------------------------------------------------------------------+
+| Rejuvenation and rewards drive retention and results.            |
+|                                                                  |
+|  +---------------+   +---------------+     +------------------+  |
+|  | REJUVENATION  | + |    REWARDS    | ->  | RETENTION        |  |
+|  | rest, safe to |   | real currency |     | past 90 days,    |  |
+|  | fail, safe at |   | for drive and |     | past 5 years     |  |
+|  | work          |   | initiative    |  +  | RESULTS          |  |
+|  +---------------+   +---------------+     | staffed shifts   |  |
+|                                            +------------------+  |
+| Not more features. A system that senses state and responds.      |
++------------------------------------------------------------------+
+```
+
+### Slide 5. Discovery data picks the entry point, not conviction
+
+Layout L3. Three bets, each with the evidence that would select it, plus the priced do-nothing row.
+
+```
++------------------------------------------------------------------+
+| Each bet names the evidence that would make it the right entry.  |
++------------+---------------+---------------+---------------------+
+|            | A First 90    | B Answer to   | C Signal Engine     |
+|            | days          | action        |                     |
++------------+---------------+---------------+---------------------+
+| Worth      | ~$15M/yr per  | ~$100M/yr per | ~2x yield on the    |
+|            | retention pt  | minute back   | same incentive $    |
+| North star | 90-day new    | minutes back  | predicted vs actual |
+|            | hire retention| per week      | lift, holdouts      |
+| Choose if  | exits cluster | questions     | drivers vary by     |
+|            | early, themes | dead-end into | cohort, appetite    |
+|            | = confusion   | manual work   | for platform spend  |
+| Main risk  | retention is  | actions touch | reads as            |
+|            | multi-causal  | systems of    | surveillance;       |
+|            |               | record        | slowest to a win    |
++------------+---------------+---------------+---------------------+
+| Do nothing: ~$1.5B/yr replacement spend continues. Not an option |
+| I would defend, and the one I would kill first.                  |
++------------------------------------------------------------------+
+```
+
+### Slide 6. Sequence A then C, with B woven through: a visible win in one quarter that becomes the platform
+
+Layout L4. States the trade-off in the open.
+
+```
++------------------------------------------------------------------+
+| A then C, B woven through. Proof first, breadth second.          |
+|                                                                  |
+|  days 1-30        days 31-60           days 61-90                |
+|  +-------------+  +------------------+  +---------------------+  |
+| A| baseline    |->| Onboarding       |->| pilot vs control    |  |
+|  | journey map |  | Companion, 20    |  | read, scale/kill    |  |
+|  +-------------+  | stores           |  +---------------------+  |
+|  +-------------+  +------------------+  +---------------------+  |
+| B| cluster the |->| schedule-conflict|->| harden, 2nd cluster |  |
+|  | 3M questions|  | action agent     |  |                     |  |
+|  +-------------+  +------------------+  +---------------------+  |
+|  +-------------+  +------------------+  +---------------------+  |
+| C| signal audit|->| 1 score, 2 arms  |->| contextual bandit   |  |
+|  +-------------+  +------------------+  +---------------------+  |
+|                                          ^ GATE: day-90        |
+| Cost of this order: platform starts slower. Benefit: a proven   |
+| retention number before we ask for platform headcount.          |
++------------------------------------------------------------------+
+```
+
+### Slide 7. Day 1 stops being "nobody told me anything"
+
+Layout L5. Maya, day 3, overnight stocking. Four surfaces, drawn as phone screens. This is the slide that makes it real for a non-product executive.
+
+```
++------------------------------------------------------------------+
+| Day 1 stops being "nobody told me anything."                     |
+|                                                                  |
+| +------------+ +------------+ +------------+ +------------+      |
+| | 6:55       | | chat       | |    STAR    | | Maya -> 90 |      |
+| | First      | | "what's a  | | Week-1     | | [====>   ] |      |
+| | shift      | |  zone?"    | | streak     | | d30 check  |      |
+| | today.     | | plain      | | done. Pick | | d60 cross  |      |
+| | Badge,     | | answer, no | | your       | | d90 path   |      |
+| | then meet  | | jargon     | | reward:    | | picker     |      |
+| | Dee,       | | assumed    | | card/lunch/| |            |      |
+| | aisle 12   | |            | | stock/give | | rest is    |      |
+| +------------+ +------------+ +------------+ +------------+      |
+|   proactive      conversational   reward         growth path     |
+|                                                                  |
+| Same four surfaces carry every plan. Draft copy, not shipped UX. |
++------------------------------------------------------------------+
+```
+
+### Slide 8. Six cohort scores decide what fires, and a bandit learns what works per cohort
+
+Layout L6. Engineering and data-science credibility slide, compressed to one page with the detail pushed to appendix.
+
+```
++------------------------------------------------------------------+
+| Six cohort scores decide what fires. A bandit learns what works. |
+|                                                                  |
+| L5 | roadmap surface: score, rank, sequence                      |
+| L4 | learning: contextual bandit, Thompson sampling              |
+| L3 | decision: friction>=65 -> alerts. wellbeing<=40 -> recovery |
+| L2 | scores per COHORT: friction, engagement, retention-risk,    |
+|    | growth-readiness, trust, wellbeing                          |
+| L1 | inputs: telemetry, voice of associate, field, workforce,    |
+|    | operational, competitive, external                          |
+|                                                                  |
+| Cohort, never individual. Policies export as "cohort X responds  |
+| best to Y" so People teams can audit every trigger.              |
++------------------------------------------------------------------+
+```
+
+### Slide 9. Four risks can sink this, and each has an owner and a trigger
+
+Layout L7. Pre-empts the room rather than waiting for it.
+
+```
++------------------------------------------------------------------+
+| Four risks can sink this. Each has an owner and a trip wire.     |
++---------------+--------+-------------------+---------------------+
+| Risk          | Owner  | Trigger to watch  | Mitigation          |
++---------------+--------+-------------------+---------------------+
+| Reads as      | Product| associate         | associates see own  |
+| surveillance  | + HR   | sentiment drop    | signals, framed as  |
+|               |        | in pilot stores   | growth, opt-out     |
+| Bandit games  | DS     | engagement up,    | reward validated    |
+| its own metric|        | 90-day flat       | vs 90-day holdouts  |
+| Retention is  | Product| control stores    | claim only the app  |
+| multi-causal  |        | move too          | share, matched pairs|
+| Wrong write to| Eng    | any incorrect     | strictest grounding |
+| system of rec.|        | schedule action   | tier, lead approves |
++---------------+--------+-------------------+---------------------+
+| Rewards are taxable comp. Payroll integration, not an app feature.|
++------------------------------------------------------------------+
+```
+
+### Slide 10. Decision requested: 2 weeks, 20 pilot and 20 control stores, 1 DS pod, named owner, start date
+
+Layout L8. Amount, owner, date, fallback, kill criteria.
+
+```
++------------------------------------------------------------------+
+| Decision requested today.                                        |
+|                                                                  |
+| +--------------------------------------------------------------+ |
+| | APPROVE: 2-week discovery sprint, then a 90-day pilot        | |
+| | Footprint: 20 pilot stores + 20 matched control stores       | |
+| | Team: 1 DS pod, [N] engineers, PM owner: [name]              | |
+| | Budget: $[amount]  Start: [date]  Gate: day 90               | |
+| +--------------------------------------------------------------+ |
+|                                                                  |
+| SCALE IF: 90-day retention in pilot beats control by >= 2 pts,   |
+|           pre-registered, matched pairs.                         |
+| KILL IF:  lift < 1 pt, or sentiment drops in pilot stores.       |
+| FALLBACK IF DECLINED: telemetry-and-survey-only baseline at      |
+|           roughly a tenth the cost, weaker evidence, revisit Q3. |
++------------------------------------------------------------------+
+```
+
+## Appendix: built from the questions each seat will ask
+
+Sequenced so any question lands one flip away.
+
+| # | Slide | Seat it answers |
+| --- | --- | --- |
+| A1 | Plan A ROI model, every assumption exposed, sensitivity on the two inputs that matter | CFO |
+| A2 | Plan B ROI model: minutes returned, deflection, loaded-labor rate | CFO |
+| A3 | Plan C ROI model: incentive yield per arm, platform effect on future feature cost | CFO |
+| A4 | Measurement design: matched pairs, pre-registration, permanent holdouts, scale/kill arithmetic | CFO, GM |
+| A5 | Two-week discovery sprint, 4 workstreams, day by day | GM, hiring principal |
+| A6 | Where this runs: nano-agents inside the existing four-super-agent architecture | CTO |
+| A7 | Systems-of-record integration and the accuracy tiering that guards scheduling and pay | CTO, eng leads |
+| A8 | Thompson sampling in one page: how exploration scales with uncertainty | CTO, DS |
+| A9 | Reward definition and why it is validated against 90-day retention, not clicks | DS |
+| A10 | Six scores defined, including the narrow operational definition of wellbeing | DS, HR |
+| A11 | Threshold policy in full, and what fires when several families trip at once | Product, HR |
+| A12 | Reward ladder: everyday, quarterly, career, and who grants each | HR |
+| A13 | Compliance: taxable wages, sweepstakes rules, HR calibration, equity audits | Legal, HR |
+| A14 | Guardrails: exposure floors, intervention budget caps, human-readable policies | HR, legal |
+| A15 | Full 18-item roadmap on journey swimlanes with the opportunity formula | Eng leads, GM |
+| A16 | Plan B detail: phases, north star, risks | Any |
+| A17 | Plan C detail: phases, north star, risks | Any |
+| A18 | Scale requirements: feature store, versioned scores, config-driven arms, WCAG 2.2 AA, 44 languages | CTO |
+| A19 | Grounding facts and sources | Any |
+
+## Open inputs before build
+
+Three numbers are placeholders in the source and need your real figures, or they ship tagged as illustrative:
+
+1. Sprint and pilot budget in dollars. Source states the ask as 2 weeks, 20 stores, 1 DS pod, with no dollar figure. Slide 10 needs one, plus engineer count.
+2. Named PM owner and start date for slide 10.
+3. Whether 500K annual new store hires and $3,000 replacement cost can be replaced with Walmart-sourced figures. Both currently carry an "illustrative" tag, which is defensible but weaker in a CFO conversation.
+
+## Changes from the existing site narrative
+
+- Recommendation moves to slide 1. The site opens on a thesis and reaches the ask in frame 5.
+- Do-nothing is priced at about $1.5B a year and named as the option to kill. The site never prices inaction.
+- Risks get owners, trip wires, and mitigations in one table. The site scatters them per plan.
+- Scale and kill criteria are numeric and pre-registered on the decision slide.
+- Detail moves to a 19-slide appendix so the main path stays at 10.
