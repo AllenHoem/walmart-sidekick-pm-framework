@@ -356,22 +356,22 @@ function labelCell(t) {
 
   const rows = [
     headerRow(["", "A · Own the first 90 days", "B · Answer to action", "C · Signal Engine"]),
-    [labelCell("Worth"),
-      "~$15M a year per point of 90-day retention",
-      "~$100M a year per minute returned per shift",
-      "~2x retention yield on the same incentive dollar"],
-    [labelCell("North star"),
-      "90-day new-hire retention, pilot vs control stores",
-      "Minutes of associate time returned per week",
-      "Predicted vs actual lift in bandit cohorts, with holdouts"],
+    [labelCell("Value"),
+      "$15M a year for every 1 point gained in 90-day retention",
+      "$100M a year for every 1 minute given back per shift",
+      "About 2x the retention gain from the same incentive budget"],
+    [labelCell("Key Metric Improved"),
+      "90-day new-hire retention, pilot stores vs control stores",
+      "Minutes of work time returned per associate per week",
+      "Predicted vs actual retention lift, measured against holdouts"],
     [labelCell("Choose if"),
-      "Exits cluster early and themes read confusion and isolation, not wage",
-      "High question volume dead-ends into manual handoffs",
-      "Attrition drivers vary sharply by cohort and there is appetite for platform spend"],
-    [labelCell("Main risk"),
-      "Retention is multi-causal. The app moves only its share",
-      "Actions touch systems of record. One wrong write costs more trust than 100 right answers earn",
-      "Scoring can read as surveillance. Slowest path to a visible win"]
+      "New hires quit early, and exit interviews blame confusion and isolation, not pay",
+      "Associates ask the same questions constantly, and answers dead-end in a manual handoff",
+      "Different groups quit for different reasons, and there is budget for a platform"],
+    [labelCell("Risk"),
+      "People quit for many reasons. An app only moves the ones it touches",
+      "Agents write into scheduling and HR systems. One bad write undoes 100 right answers",
+      "Scoring associates can feel like surveillance. Slowest bet to show a visible win"]
   ];
   tableSlide(s, rows, { y: 2.05, colW: [1.55, 3.51, 3.51, 3.52], fontSize: 11 });
 

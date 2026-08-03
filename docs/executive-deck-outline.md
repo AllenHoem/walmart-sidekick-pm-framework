@@ -146,16 +146,17 @@ Layout L3. Three bets, each with the evidence that would select it, plus the pri
 |            | A First 90    | B Answer to   | C Signal Engine     |
 |            | days          | action        |                     |
 +------------+---------------+---------------+---------------------+
-| Worth      | ~$15M/yr per  | ~$100M/yr per | ~2x yield on the    |
-|            | retention pt  | minute back   | same incentive $    |
-| North star | 90-day new    | minutes back  | predicted vs actual |
-|            | hire retention| per week      | lift, holdouts      |
-| Choose if  | exits cluster | questions     | drivers vary by     |
-|            | early, themes | dead-end into | cohort, appetite    |
-|            | = confusion   | manual work   | for platform spend  |
-| Main risk  | retention is  | actions touch | reads as            |
-|            | multi-causal  | systems of    | surveillance;       |
-|            |               | record        | slowest to a win    |
+| Value      | $15M/yr per   | $100M/yr per  | ~2x retention gain  |
+|            | retention pt  | minute back   | per incentive $     |
+| Key Metric | 90-day new    | minutes back  | predicted vs actual |
+| Improved   | hire retention| per week      | lift, vs holdouts   |
+| Choose if  | new hires quit| same questions| groups quit for     |
+|            | early, exits  | asked over and| different reasons,  |
+|            | blame confus- | over, answers | budget exists for a |
+|            | ion, not pay  | dead-end      | platform            |
+| Risk       | people quit   | agents write  | scoring can feel    |
+|            | for many      | to HR systems;| like surveillance;  |
+|            | reasons       | one bad write | slowest to a win    |
 +------------+---------------+---------------+---------------------+
 | Do nothing: ~$1.5B/yr replacement spend continues. Not an option |
 | I would defend, and the one I would kill first.                  |
