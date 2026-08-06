@@ -160,46 +160,68 @@ function labelCell(t) {
   return { text: t, options: { bold: true, color: NAVY, fill: { color: SURFACE } } };
 }
 
+/* One horizontal slice of a pyramid, cut from a triangle of base PW and
+   height PH so the sloped edges of adjacent tiers line up exactly.
+   Index 0 is the apex, which is a triangle rather than a trapezoid. */
+function pyramidTier(s, cx, py, PW, PH, i, n, color) {
+  const d0 = PH * i / n, d1 = PH * (i + 1) / n;
+  const w0 = PW / 2 * i / n, w1 = PW / 2 * (i + 1) / n;
+  const h = d1 - d0;
+  const pts = i === 0
+    ? [{ x: w1, y: 0 }, { x: 2 * w1, y: h }, { x: 0, y: h }, { close: true }]
+    : [{ x: w1 - w0, y: 0 }, { x: w1 + w0, y: 0 },
+       { x: 2 * w1, y: h }, { x: 0, y: h }, { close: true }];
+  s.addShape(pres.ShapeType.custGeom, {
+    x: cx - w1, y: py + d0, w: 2 * w1, h,
+    points: pts, fill: { color }, line: { color: WHITE, width: 1.75 }
+  });
+}
+
 /* ============================================================
    MAIN PATH
    ============================================================ */
 
-/* --- 1. Recommendation --- */
-{
-  const s = newSlide(true);
-  eyebrow(s, "Allen Hoem  ·  Principal PM candidate  ·  MyWalmart / Sidekick  ·  R-2555971", true);
-  s.addText("Approve 2 weeks, 20 pilot stores, and 1 data-science pod to chase 2 to 3 points of 90-day retention.", {
-    x: M, y: 1.02, w: W - 0.9, h: 1.85,
-    fontFace: H, fontSize: 33, bold: true, color: WHITE,
-    valign: "top", margin: 0, lineSpacing: 40
-  });
-
-  const tw = (W - 0.6) / 3;
-  statTile(s, M, 3.22, tw, 1.62, "~$15M", "a year, per point of 90-day\nnew-hire retention", true);
-  statTile(s, M + tw + 0.3, 3.22, tw, 1.62, "$30-45M", "a year if the pilot lands\n2 to 3 points", true);
-  statTile(s, M + (tw + 0.3) * 2, 3.22, tw, 1.62, "Day 90", "pre-set scale or kill,\nno open-ended spend", true);
-
-  s.addText("Plan A first. Plans B and C follow on evidence, not on preference.", {
-    x: M, y: 5.22, w: W, h: 0.45,
-    fontFace: B, fontSize: 15.5, color: "D6DEEC", valign: "middle", margin: 0
-  });
-  footNote(s, "Illustrative model: about 500K new store hires a year, about $3,000 to replace each one. The sprint replaces both figures with measured data.", true);
-  pageNum(s, true);
-  s.addNotes("Open on the ask, not an agenda. Two weeks of discovery, then a 90-day pilot across 20 matched store pairs. Every number here is order-of-magnitude with assumptions stated, built to be interrogated and then replaced by pilot data.");
-}
-
-/* --- 2. Do-nothing price --- */
+/* --- 1. Problem: retention and results --- */
 {
   const s = newSlide(false);
-  eyebrow(s, "Situation and complication", false);
-  title(s, "Replacement spend runs about $1.5B a year, and it concentrates in weeks 1 to 6.", false);
+  eyebrow(s, "Allen Hoem  ·  Principal PM candidate  ·  MyWalmart / Sidekick  ·  R-2555971", false);
+  title(s, "About $1.5B a year walks out the door, and most of it goes in the first 6 weeks.", false);
 
+  /* Left: the two outputs, named large. Right: what they cost today. */
+  const lw = 3.95;
+  function outTerm(y, word, gloss) {
+    s.addText(word, {
+      x: M, y, w: lw, h: 0.5,
+      fontFace: H, fontSize: 27, bold: true, color: NAVY, valign: "middle", margin: 0
+    });
+    s.addText(gloss, {
+      x: M, y: y + 0.52, w: lw, h: 0.5,
+      fontFace: B, fontSize: 12.5, color: MUTED, valign: "top", margin: 0, lineSpacing: 16
+    });
+  }
+  outTerm(2.24, "RETENTION", "Past 90 days, and past 5 years.");
+  s.addText("+", {
+    x: M, y: 3.34, w: lw, h: 0.4,
+    fontFace: H, fontSize: 22, bold: true, color: AMBER, valign: "middle", margin: 0
+  });
+  outTerm(3.82, "RESULTS", "Staffed shifts, and a full floor.");
+
+  s.addShape(pres.ShapeType.rect, {
+    x: M, y: 5.12, w: 1.1, h: 0.035, fill: { color: AMBER }, line: { width: 0 }
+  });
+  s.addText("These are the two numbers we are trying to move. Everything after this slide is an argument about how.", {
+    x: M, y: 5.3, w: lw, h: 1.1,
+    fontFace: B, fontSize: 13, italic: true, color: INK, valign: "top", margin: 0, lineSpacing: 17
+  });
+
+  const rx = M + lw + 0.45;
+  const rw = W - lw - 0.45;
   s.addChart(pres.ChartType.line, [{
     name: "New hires still employed",
     labels: ["Day 0", "Day 7", "Day 14", "Day 30", "Day 45", "Day 60", "Day 90"],
     values: [100, 94, 88, 81, 78, 75, 72]
   }], {
-    x: M, y: 2.12, w: 6.75, h: 4.0,
+    x: rx, y: 2.06, w: rw, h: 2.46,
     showTitle: false, showLegend: false,
     chartColors: [TEAL], lineSize: 3.5, lineSmooth: false,
     showValue: true, dataLabelPosition: "t", dataLabelFontSize: 10,
@@ -212,21 +234,9 @@ function labelCell(t) {
     catGridLine: { style: "none" },
     valAxisLineShow: false, catAxisLineShow: true, catAxisLineColor: SURFACE_2
   });
-  s.addText("Steepest loss sits in the first 6 weeks, before most support programs reach a new hire.", {
-    x: M, y: 6.12, w: 6.75, h: 0.55,
-    fontFace: B, fontSize: 11.5, italic: true, color: MUTED, valign: "top", margin: 0, lineSpacing: 14
-  });
-
-  const rx = M + 7.15;
-  const rw = W - 7.15;
-  card(s, rx, 2.12, rw, 1.28, AMBER_SOFT, 0.12);
-  s.addText("~$1.5B", {
-    x: rx + 0.22, y: 2.24, w: rw - 0.44, h: 0.62,
-    fontFace: H, fontSize: 30, bold: true, color: "8A5A11", valign: "middle", margin: 0
-  });
-  s.addText("a year in replacement spend if nothing changes", {
-    x: rx + 0.22, y: 2.86, w: rw - 0.44, h: 0.44,
-    fontFace: B, fontSize: 12, color: "8A5A11", valign: "top", margin: 0
+  s.addText("New hires still employed. Steepest loss sits in the first 6 weeks, before most support programs reach anyone.", {
+    x: rx, y: 4.54, w: rw, h: 0.36,
+    fontFace: B, fontSize: 11, italic: true, color: MUTED, valign: "top", margin: 0
   });
 
   claimList(s, [
@@ -234,14 +244,242 @@ function labelCell(t) {
     "About $3,000 to replace each early exit.",
     "Exit themes read as confusion and isolation, not only wage competition.",
     "The retention assets already exist and go unorchestrated: Academies, 50+ Live Better U certificates at no cost, 310K associates promoted in two years."
-  ], rx, 3.66, rw, false, 13);
+  ], rx, 4.98, rw, false, 12);
 
   footNote(s, "Survival curve is illustrative. Days 1 to 30 of the sprint replace it with real 7/30/60/90-day curves by cohort.", false);
   pageNum(s, false);
-  s.addNotes("This is the do-nothing price. Inaction is not free: at these assumptions it costs about $1.5B a year. The curve shape is the point, not the exact values. The sprint produces the real curves in the first 30 days.");
+  s.addNotes("Open on the problem and price it. Retention and results are the two numbers we are short of, and doing nothing costs about $1.5B a year at these assumptions. Nothing is asked of the room on this slide. The curve shape is the point, not the exact values.");
 }
 
-/* --- 3. Answer engine, weak action engine --- */
+/* --- 2. Hypothesis, not conclusion --- */
+{
+  const s = newSlide(true);
+  eyebrow(s, "Hypothesis, not conclusion", true);
+
+  const opW = 0.9;
+  const tw = (W - opW) / 2;
+  function eqTerm(x, y, word, gloss) {
+    s.addText(word, {
+      x, y, w: tw, h: 0.62,
+      fontFace: H, fontSize: 30, bold: true, color: WHITE,
+      align: "center", valign: "middle", margin: 0
+    });
+    s.addText(gloss, {
+      x: x + 0.4, y: y + 0.66, w: tw - 0.8, h: 0.66,
+      fontFace: B, fontSize: 13, color: "AEBFD8",
+      align: "center", valign: "top", margin: 0, lineSpacing: 17
+    });
+  }
+  function eqOp(y, sym, size) {
+    s.addText(sym, {
+      x: M + tw, y, w: opW, h: 0.62,
+      fontFace: H, fontSize: size, bold: true, color: AMBER,
+      align: "center", valign: "middle", margin: 0
+    });
+  }
+
+  eqTerm(M, 1.42, "REWARDS", "Real currency for drive. The associate picks it.");
+  eqOp(1.42, "+", 26);
+  eqTerm(M + tw + opW, 1.42, "REJUVENATION", "Rest that is scheduled, not begged for.");
+
+  s.addText("=  ?", {
+    x: M, y: 3.16, w: W, h: 0.9,
+    fontFace: H, fontSize: 40, bold: true, color: AMBER,
+    align: "center", valign: "middle", margin: 0
+  });
+
+  eqTerm(M, 4.22, "RETENTION", "Past 90 days, and past 5 years.");
+  eqOp(4.22, "+", 26);
+  eqTerm(M + tw + opW, 4.22, "RESULTS", "Staffed shifts, and a full floor.");
+
+  s.addText("Which one moves the number, and for which associates? That is what the pilot is for.", {
+    x: M, y: 5.92, w: W, h: 0.6,
+    fontFace: B, fontSize: 15.5, color: "D6DEEC",
+    align: "center", valign: "middle", margin: 0
+  });
+  footNote(s, "Every point of 90-day retention is worth about $15M a year. Rewards reach payroll, not just a badge in an app.", true);
+  pageNum(s, true);
+  s.addNotes("The question mark is the most important character on this slide. Every deck that has proposed a rewards program asserted this equation and then spent against it. This one puts the hypothesis on screen and says the pilot will try to break it. That is what makes two weeks worth funding, and it is a stronger position than certainty because it survives being wrong.");
+}
+
+/* --- 3. Associates are not one user --- */
+{
+  const s = newSlide(false);
+  eyebrow(s, "Who this is for", false);
+  title(s, "No two associates are chasing the same thing, so one reward for everyone reaches almost no one.", false);
+
+  const cw = (W - 0.6) / 3;
+  function motive(i, tag, line, tone) {
+    const x = M + (cw + 0.3) * i;
+    card(s, x, 2.16, cw, 1.5, SURFACE, 0.12);
+    s.addShape(pres.ShapeType.rect, {
+      x, y: 2.16, w: cw, h: 0.055, fill: { color: tone }, line: { width: 0 }
+    });
+    s.addText(tag.toUpperCase(), {
+      x: x + 0.22, y: 2.34, w: cw - 0.44, h: 0.3,
+      fontFace: B, fontSize: 10.5, bold: true, charSpacing: 1.2,
+      color: tone, valign: "middle", margin: 0
+    });
+    s.addText(line, {
+      x: x + 0.22, y: 2.68, w: cw - 0.44, h: 0.88,
+      fontFace: B, fontSize: 13, color: INK, valign: "top", margin: 0, lineSpacing: 17
+    });
+  }
+  motive(0, "Security", "Paying rent this month. Cash is the only signal that lands.", "1E4E6B");
+  motive(1, "Recognition", "Wants to be good at this, and wants someone to notice they are.", "35604A");
+  motive(2, "Time back", "Wants the day to stop being a slog. An hour off beats a gift card.", "8A5A11");
+
+  card(s, M, 3.96, W, 1.72, SURFACE, 0.12);
+  s.addShape(pres.ShapeType.rect, {
+    x: M, y: 3.96, w: 0.055, h: 1.72, fill: { color: AMBER }, line: { width: 0 }
+  });
+  s.addText("I worked two summers at Meijer. It was boring, and I got good at wasting time. Nobody was measuring whether I was engaged, so I wasn't. My store was in a safe area. Plenty of associates do not get that. The difference between a job that empties you and one that gives something back is mostly whether the place notices you are in it.", {
+    x: M + 0.34, y: 4.12, w: W - 0.68, h: 1.42,
+    fontFace: B, fontSize: 14, color: INK, valign: "top", margin: 0, lineSpacing: 21
+  });
+
+  s.addText("So Sidekick should not average associates. It should learn what each cohort responds to, and give them that.", {
+    x: M, y: 5.94, w: W, h: 0.55,
+    fontFace: B, fontSize: 14.5, bold: true, color: NAVY, valign: "middle", margin: 0
+  });
+  footNote(s, "Three motives, not three personas. No invented biographies. Each maps to one of the reward types on the next slide.", false);
+  pageNum(s, false);
+  s.addNotes("Say this once and move on. Variation between associates is not noise to be averaged away, it is the thing worth designing for. The Meijer note is here because it is more useful evidence about disengagement than a survey, and because it makes the argument something I have lived rather than modelled.");
+}
+
+/* --- 4. Rewards, defined --- */
+{
+  const s = newSlide(false);
+  eyebrow(s, "Rewards, defined", false);
+  title(s, "Three kinds of reward, and the two Sidekick delivers best are the cheap ones.", false);
+
+  const cw = (W - 0.6) / 3;
+  function rewardCol(i, name, body, note, tone, soft) {
+    const x = M + (cw + 0.3) * i;
+    card(s, x, 2.12, cw, 0.5, tone, 0.1);
+    s.addText(name, {
+      x: x + 0.22, y: 2.12, w: cw - 0.44, h: 0.5,
+      fontFace: B, fontSize: 12.5, bold: true, charSpacing: 1,
+      color: WHITE, valign: "middle", margin: 0
+    });
+    card(s, x, 2.7, cw, 1.45, SURFACE, 0.1);
+    s.addText(body, {
+      x: x + 0.22, y: 2.84, w: cw - 0.44, h: 1.19,
+      fontFace: B, fontSize: 12.5, color: INK, valign: "top", margin: 0, lineSpacing: 16.5
+    });
+    card(s, x, 4.25, cw, 1.25, soft, 0.1);
+    s.addText(note, {
+      x: x + 0.22, y: 4.39, w: cw - 0.44, h: 0.99,
+      fontFace: B, fontSize: 12, color: tone, valign: "top", margin: 0, lineSpacing: 16
+    });
+  }
+  rewardCol(0, "EXTRINSIC",
+    "Cash bonuses, pay increases, gift cards, benefits. Direct financial security.",
+    "Easiest for a competitor to match. Highest cost per point of retention.",
+    "1E4E6B", TEAL_SOFT);
+  rewardCol(1, "INTRINSIC",
+    "Praise, public or private. Meaningful work, growth, respect. Wellness hours and wellness days.",
+    "Cheapest to deliver and hardest to fake. Needs a system that actually noticed.",
+    "35604A", GREEN_SOFT);
+  rewardCol(2, "INSTANT",
+    "Real-time positive feedback. Points redeemed for something real. Reinforces good daily habits.",
+    "Highest frequency, lowest unit cost. Shapes behavior in the moment, not at review time.",
+    "8A5A11", AMBER_SOFT);
+
+  s.addText("An app at 1.9M scale cannot out-spend anyone on cash. It can notice, at a scale no manager can.", {
+    x: M, y: 5.75, w: W, h: 0.5,
+    fontFace: B, fontSize: 14.5, bold: true, color: NAVY, valign: "middle", margin: 0
+  });
+  footNote(s, "Sources: PMC8319625; Gallup on recognition; Incentive Research Foundation; Reward Gateway; IJSMS 8(3) 118. Full citations on A20.", false);
+  pageNum(s, false);
+  s.addNotes("Rewards means four different things to the four seats in this room, so define it before arguing about it. Extrinsic is the one every competitor already has and the one Walmart cannot win on per dollar. Intrinsic and instant both depend on noticing something at the moment it happens, and noticing at 1.9M scale is a software problem rather than a management problem. Wellness hours in the intrinsic column are the direct link back to rejuvenation.");
+}
+
+/* --- 5. Value ladder and build order --- */
+{
+  const s = newSlide(false);
+  eyebrow(s, "Approach", false);
+  title(s, "Each tier is earned by the one below, so the base and middle start together.", false);
+
+  const PW = 3.1, PH = 3.2, cx = M + 2.0, py = 2.28;
+  const tiers = [
+    { word: "rewards", tone: "8A5A11" },
+    { word: "rejuvenation", tone: "35604A" },
+    { word: "answers", tone: "1E4E6B" }
+  ];
+  tiers.forEach((t, i) => pyramidTier(s, cx, py, PW, PH, i, 3, t.tone));
+  tiers.forEach((t, i) => {
+    /* Sit the apex label low in its tier, where the triangle is actually
+       wide enough to hold the word. */
+    const yMid = py + PH * (i + (i === 0 ? 0.82 : 0.62)) / 3;
+    s.addText(t.word, {
+      x: cx - PW / 2, y: yMid - 0.15, w: PW, h: 0.3,
+      fontFace: B, fontSize: i === 0 ? 9.5 : 11.5, bold: true, color: WHITE,
+      align: "center", valign: "middle", margin: 0
+    });
+  });
+  s.addText("Each tier depends on the data the tier below produces.", {
+    x: M, y: py + PH + 0.14, w: 4.0, h: 0.44,
+    fontFace: B, fontSize: 12, italic: true, color: MUTED, valign: "top", margin: 0, lineSpacing: 16
+  });
+
+  const bx = M + 4.2;
+  const bw = W - 4.2;
+  const bh = 1.23;
+  function tierBand(i, name, tag, meaning, phases, dep, tone, soft) {
+    const y = 2.12 + (bh + 0.08) * i;
+    card(s, bx, y, bw, bh, soft, 0.1);
+    s.addShape(pres.ShapeType.rect, {
+      x: bx, y, w: 0.05, h: bh, fill: { color: tone }, line: { width: 0 }
+    });
+    s.addText(name, {
+      x: bx + 0.22, y: y + 0.06, w: bw - 2.0, h: 0.24,
+      fontFace: B, fontSize: 12, bold: true, color: tone, valign: "middle", margin: 0
+    });
+    s.addText(tag, {
+      x: bx + bw - 1.95, y: y + 0.06, w: 1.75, h: 0.24,
+      fontFace: B, fontSize: 9.5, bold: true, charSpacing: 0.8, color: tone,
+      align: "right", valign: "middle", margin: 0
+    });
+    s.addText(meaning, {
+      x: bx + 0.22, y: y + 0.32, w: bw - 0.44, h: 0.22,
+      fontFace: B, fontSize: 11, color: INK, valign: "top", margin: 0
+    });
+    s.addText(phases, {
+      x: bx + 0.22, y: y + 0.56, w: bw - 0.44, h: 0.42,
+      fontFace: B, fontSize: 10, color: NAVY_3, valign: "top", margin: 0, lineSpacing: 13
+    });
+    s.addText(dep, {
+      x: bx + 0.22, y: y + 1.0, w: bw - 0.44, h: 0.2,
+      fontFace: B, fontSize: 9.5, italic: true, color: MUTED, valign: "top", margin: 0
+    });
+  }
+  tierBand(0, "REWARDS THE ASSOCIATE PICKS", "HARD TO COPY",
+    "Real currency for initiative, paid through payroll. They choose it.",
+    "d1-30 inventory signals, fit score v0   ·   d31-60 catalog v1, HR and legal cleared   ·   d61-90 bandit across 3 to 4 arms",
+    "Depends on: the cohort scores the two tiers below produce.",
+    "8A5A11", AMBER_SOFT);
+  tierBand(1, "REJUVENATION ON THE SCHEDULE", "DIFFERENTIATED",
+    "Rest that is scheduled, not begged for. Safe to fail. Safe at work.",
+    "d1-30 map the first 90 days, pick 20 matched pairs   ·   d31-60 check-ins fire at day 7, 30, 60   ·   d61-90 read lift against control",
+    "Depends on: knowing where each new hire sits in their first 90 days.",
+    "35604A", GREEN_SOFT);
+  tierBand(2, "ANSWERS THAT FINISH THE JOB", "TABLE STAKES",
+    "Ask once and the task completes. No “go ask your team lead.”",
+    "d1-30 cluster 3M questions by intent   ·   d31-60 one agent closes one loop end to end   ·   d61-90 deflection measured, cluster 2 spec",
+    "Depends on: write access to systems of record, and the accuracy bar that guards it.",
+    "1E4E6B", TEAL_SOFT);
+
+  card(s, M, 6.08, W, 0.56, NAVY, 0.1);
+  s.addText("Rewards and rejuvenation ship as separate arms from day 31, so the pilot can tell which one moved the number, and for whom.", {
+    x: M + 0.24, y: 6.08, w: W - 0.48, h: 0.56,
+    fontFace: B, fontSize: 12.5, bold: true, color: WHITE, valign: "middle", margin: 0
+  });
+  pageNum(s, false);
+  s.addNotes("This answers the question mark on slide 2. Rewards and rejuvenation run as distinct arms rather than one bundled treatment, so a lift can be attributed to one or the other instead of to the program as a whole. Rewards last is a sequencing decision, not a priority call: rewards without the signal layer underneath is a gift card lottery.");
+}
+
+/* --- 6. Answer engine, weak action engine --- */
 {
   const s = newSlide(false);
   eyebrow(s, "Insight from 3M questions a day", false);
@@ -298,57 +536,7 @@ function labelCell(t) {
   s.addNotes("Sidekick is a strong answer engine and a weak action engine. The gap between answering and doing is where the minutes and the goodwill go. Devon's exchange is the everyday version of that gap.");
 }
 
-/* --- 4. R4 point of view --- */
-{
-  const s = newSlide(true);
-  eyebrow(s, "Point of view", true);
-  title(s, "Rejuvenation and rewards drive retention and results.", true, { size: 34 });
-
-  /* 4 blocks + 3 operators must total exactly W, or the last block
-     runs off the slide. */
-  const opW = 0.43;
-  const bw = (W - opW * 3) / 4;
-  const bh = 2.2, by = 2.82;
-  let x = M;
-
-  function term(xx, head, sub, accent) {
-    card(s, xx, by, bw, bh, accent ? NAVY_3 : NAVY_2, 0.12);
-    s.addText(head, {
-      x: xx + 0.2, y: by + 0.24, w: bw - 0.4, h: 0.46,
-      fontFace: H, fontSize: 19, bold: true, color: accent ? AMBER : WHITE,
-      valign: "middle", margin: 0
-    });
-    s.addText(sub, {
-      x: xx + 0.2, y: by + 0.76, w: bw - 0.4, h: 1.3,
-      fontFace: B, fontSize: 11.5, color: "C9D4E6", valign: "top", margin: 0, lineSpacing: 15
-    });
-  }
-  function op(xx, sym) {
-    s.addText(sym, {
-      x: xx, y: by + bh / 2 - 0.3, w: opW, h: 0.6,
-      fontFace: H, fontSize: 24, bold: true, color: AMBER,
-      align: "center", valign: "middle", margin: 0
-    });
-  }
-
-  term(x, "Rejuvenation", "Rest that is scheduled, not begged for. Safe to fail and learn. Safe at work and in the community.");
-  x += bw; op(x, "+"); x += opW;
-  term(x, "Rewards", "Real currency for driven, proactive, challenge-seeking work. The associate picks what it is.");
-  x += bw; op(x, "="); x += opW;
-  term(x, "Retention", "Past 90 days, and past 5 years. The 5-year average US tenure is the number to beat.", true);
-  x += bw; op(x, "+"); x += opW;
-  term(x, "Results", "Effective associates, staffed shifts, customers served on a full floor.", true);
-
-  s.addText("This is not a request for more features. It is a system that senses each cohort's state and responds with the right one.", {
-    x: M, y: 5.5, w: W, h: 0.6,
-    fontFace: B, fontSize: 14.5, color: "D6DEEC", valign: "middle", margin: 0, lineSpacing: 19
-  });
-  footNote(s, "Rewards reach payroll, not just a badge in an app. That distinction is what makes the loop credible to an associate.", true);
-  pageNum(s, true);
-  s.addNotes("The thesis in one line. Rejuvenation and rewards are inputs; retention and results are outputs. Everything downstream is an implementation of this claim.");
-}
-
-/* --- 5. Three bets --- */
+/* --- 7. Three bets --- */
 {
   const s = newSlide(false);
   eyebrow(s, "Three bets, one decision rule", false);
@@ -384,7 +572,7 @@ function labelCell(t) {
   s.addNotes("Each bet is falsifiable: it states up front what the discovery data would have to show for it to be the right entry point. That makes the sprint output the decider rather than anyone's conviction in this room.");
 }
 
-/* --- 6. Sequence --- */
+/* --- 8. Sequence --- */
 {
   const s = newSlide(false);
   eyebrow(s, "Recommended sequence", false);
@@ -446,7 +634,7 @@ function labelCell(t) {
   s.addNotes("A proves the retention thesis in one quarter on a footprint small enough to kill. C turns that proof into rails everything later ships on. B runs through both because its wins are immediate and it feeds the engine the intent data it needs.");
 }
 
-/* --- 7. Maya storyboard --- */
+/* --- 9. Maya storyboard --- */
 {
   const s = newSlide(false);
   eyebrow(s, "Plan A, seen from the floor", false);
@@ -497,7 +685,7 @@ function labelCell(t) {
   s.addNotes("Maya is a day-3 overnight stocker. Skipping a training never costs her anything, which is what makes it safe to learn. The week-1 reward is chosen by her, and that choice is also the training signal Plan C learns from.");
 }
 
-/* --- 8. Signal Engine --- */
+/* --- 10. Signal Engine --- */
 {
   const s = newSlide(true);
   eyebrow(s, "How it senses and learns", true);
@@ -540,7 +728,7 @@ function labelCell(t) {
   s.addNotes("Cohorts, not individuals: larger samples make the scores stable, and it is the right privacy posture because the engine never carries a hidden label on a person. Wellbeing reads operational signals only. Never health data.");
 }
 
-/* --- 9. Risks --- */
+/* --- 11. Risks --- */
 {
   const s = newSlide(false);
   eyebrow(s, "What would sink this", false);
@@ -572,7 +760,7 @@ function labelCell(t) {
   s.addNotes("Surveillance perception is the risk that kills Plan C if it is handled late. The mitigation is radical transparency from the first release, not a comms plan bolted on after launch.");
 }
 
-/* --- 10. Decision --- */
+/* --- 12. Decision --- */
 {
   const s = newSlide(true);
   eyebrow(s, "Decision requested today", true);
@@ -613,23 +801,31 @@ function labelCell(t) {
   ];
   outcomes.forEach((o, i) => {
     const x = M + i * (bw2 + 0.3);
-    card(s, x, 4.62, bw2, 1.85, "1F3050", 0.12);
+    card(s, x, 4.55, bw2, 1.5, "1F3050", 0.12);
     s.addShape(pres.ShapeType.ellipse, {
-      x: x + 0.24, y: 4.86, w: 0.2, h: 0.2, fill: { color: o.tone }, line: { color: o.tone, width: 0 }
+      x: x + 0.24, y: 4.79, w: 0.2, h: 0.2, fill: { color: o.tone }, line: { color: o.tone, width: 0 }
     });
     s.addText(o.h, {
-      x: x + 0.54, y: 4.8, w: bw2 - 0.78, h: 0.32,
+      x: x + 0.54, y: 4.73, w: bw2 - 0.78, h: 0.32,
       fontFace: H, fontSize: 15, bold: true, color: WHITE, valign: "middle", margin: 0
     });
     s.addText(o.body, {
-      x: x + 0.24, y: 5.24, w: bw2 - 0.48, h: 1.1,
+      x: x + 0.24, y: 5.17, w: bw2 - 0.48, h: 0.82,
       fontFace: B, fontSize: 11.5, color: "C9D4E6", valign: "top", margin: 0, lineSpacing: 15
     });
   });
 
-  footNote(s, "Bracketed values need finance and staffing input before this deck is presented.", true);
+  /* Closing note. Placed after the ask, not before, so it reads as a
+     reason rather than a persuasion technique. */
+  s.addShape(pres.ShapeType.rect, {
+    x: M, y: 6.24, w: 0.045, h: 0.56, fill: { color: AMBER }, line: { width: 0 }
+  });
+  s.addText("Digital channels beat paper because the information mattered. Promotions are just one more reason to spend. This is the first kind. That is why I want to work on it.", {
+    x: M + 0.26, y: 6.24, w: W - 1.1, h: 0.56,
+    fontFace: B, fontSize: 12, italic: true, color: "AEBFD8", valign: "middle", margin: 0, lineSpacing: 16
+  });
   pageNum(s, true);
-  s.addNotes("Close on the ask and stop talking. Amount, owner, date, gate, and the fallback are all on one slide so the room can decide without a second meeting.");
+  s.addNotes("Close on the ask, then one honest sentence about motive and stop talking. Amount, owner, date, gate, and the fallback are all on one slide so the room can decide without a second meeting. Bracketed values need finance and staffing input before this deck is presented.");
 }
 
 /* ============================================================
@@ -643,7 +839,7 @@ function labelCell(t) {
     x: M, y: 2.6, w: W, h: 1.0,
     fontFace: H, fontSize: 42, bold: true, color: WHITE, valign: "middle", margin: 0
   });
-  s.addText("Nineteen slides, indexed by the seat that asks. ROI models and measurement design for finance. Architecture, integration, and bandit mechanics for engineering and data science. Reward ladder, compliance, and guardrails for HR and legal.", {
+  s.addText("Twenty slides, indexed by the seat that asks. ROI models and measurement design for finance. Architecture, integration, and bandit mechanics for engineering and data science. Reward ladder, compliance, guardrails, and reward-science sources for HR and legal.", {
     x: M, y: 3.7, w: W - 3.2, h: 1.2,
     fontFace: B, fontSize: 15, color: "C9D4E6", valign: "top", margin: 0, lineSpacing: 21
   });
@@ -1140,6 +1336,44 @@ appendixList("A17  ·  Plan C in full",
   footNote(s, "Independent candidate work product. Not affiliated with or endorsed by Walmart Inc. Financial models are illustrative with stated assumptions.", true);
   pageNum(s, true);
   s.addNotes("Every figure here is public or stated as illustrative. The sprint replaces the illustrative ones with measured internal data.");
+}
+
+/* A20 reward-science sources */
+{
+  const s = newSlide(false);
+  eyebrow(s, "A20  ·  Sources behind slide 4", false);
+  title(s, "Six sources, and what each one is doing.", false, { size: 28 });
+
+  const rows = [
+    headerRow(["Source", "What it supports", "Weight"]),
+    [{ text: "PubMed Central, PMC8319625", options: { bold: true } },
+      "Intrinsic and extrinsic motivation operate through different mechanisms, so they are not interchangeable currencies",
+      "Peer reviewed"],
+    [{ text: "IJSMS, vol 8 issue 3, paper 118", options: { bold: true } },
+      "Recent academic treatment of reward systems and engagement",
+      "Peer reviewed"],
+    [{ text: "Gallup, employee recognition", options: { bold: true } },
+      "Recognition is low cost relative to its effect, which is the intrinsic column's cost argument",
+      "Industry research"],
+    [{ text: "Incentive Research Foundation", options: { bold: true } },
+      "Value and ROI of recognition programs, the number a CFO will press on",
+      "Industry, vendor-adjacent"],
+    [{ text: "Reward Gateway", options: { bold: true } },
+      "Point-reward mechanics as actually implemented, the instant gratification column",
+      "Vendor published"],
+    [{ text: "Author-supplied video reference", options: { bold: true } },
+      "Practitioner framing of gratification timing. Held in notes, not cited on slide 4",
+      "Not cited"]
+  ];
+  tableSlide(s, rows, { y: 2.05, colW: [3.3, 6.59, 2.2], fontSize: 10.5 });
+
+  card(s, M, 5.5, W, 0.82, AMBER_SOFT, 0.12);
+  s.addText("Slide 4 leans on the two peer-reviewed sources for mechanism claims and uses the industry sources for practice examples. Three of the six have a commercial interest in the conclusion, which is stated here rather than hidden.", {
+    x: M + 0.24, y: 5.5, w: W - 0.48, h: 0.82,
+    fontFace: B, fontSize: 11.5, bold: true, color: "8A5A11", valign: "middle", margin: 0, lineSpacing: 15
+  });
+  pageNum(s, false);
+  s.addNotes("Full URLs. 1: pmc.ncbi.nlm.nih.gov/articles/PMC8319625/. 2: youtube.com/watch?v=UGVuDwgcxlc. 3: gallup.com/workplace/236441/employee-recognition-low-cost-high-impact.aspx. 4: theirf.org/research_post/the-value-and-roi-of-employee-recognition/. 5: rewardgateway.com/blog/point-reward-system-for-employees. 6: ijsmsjournal.org/2025/volume-8 issue-3/ijsms-v8i3p118.pdf. If anyone challenges the reward taxonomy, this is the slide to turn to, and the honest answer is that the mechanism claims rest on the two academic sources.");
 }
 
 /* ---------- write ---------- */
