@@ -160,6 +160,64 @@ function labelCell(t) {
   return { text: t, options: { bold: true, color: NAVY, fill: { color: SURFACE } } };
 }
 
+/* Phone frame drawn as vector, so the mockups stay reproducible and
+   scale cleanly. Returns the inner screen rect for content. */
+function phoneFrame(s, x, y, w) {
+  const h = w / 0.485;                 // roughly a modern handset ratio
+  s.addShape(pres.ShapeType.roundRect, {
+    x, y, w, h, fill: { color: NAVY }, line: { color: NAVY_3, width: 1 }, rectRadius: 0.14
+  });
+  const bez = 0.055;
+  const sx = x + bez, sy = y + bez, sw = w - bez * 2, sh = h - bez * 2;
+  s.addShape(pres.ShapeType.roundRect, {
+    x: sx, y: sy, w: sw, h: sh, fill: { color: WHITE }, line: { width: 0 }, rectRadius: 0.1
+  });
+  /* Notch */
+  s.addShape(pres.ShapeType.roundRect, {
+    x: x + w / 2 - 0.22, y: sy + 0.012, w: 0.44, h: 0.075,
+    fill: { color: NAVY }, line: { width: 0 }, rectRadius: 0.037
+  });
+  /* Home indicator */
+  s.addShape(pres.ShapeType.roundRect, {
+    x: x + w / 2 - 0.24, y: sy + sh - 0.08, w: 0.48, h: 0.028,
+    fill: { color: "C6CFDD" }, line: { width: 0 }, rectRadius: 0.014
+  });
+  return { x: sx, y: sy, w: sw, h: sh };
+}
+
+function statusBar(s, r, time) {
+  s.addText(time, {
+    x: r.x + 0.1, y: r.y + 0.015, w: r.w - 0.2, h: 0.16,
+    fontFace: B, fontSize: 6, bold: true, color: INK, valign: "middle", margin: 0
+  });
+  s.addText("▮▮▮", {
+    x: r.x + 0.1, y: r.y + 0.015, w: r.w - 0.2, h: 0.16,
+    fontFace: B, fontSize: 5, color: MUTED, align: "right", valign: "middle", margin: 0
+  });
+}
+
+/* Chat-style bubble. side "in" is the app, "out" is the associate.
+   Height is derived from the wrap, not passed in, since guessing it by
+   hand is what pushed text outside the box. The 130 constant is lower
+   than claimList's 150 because Calibri sets wider per em at 6.5pt than
+   the linear estimate predicts. */
+function bubble(s, r, y, text, side, tone, ink) {
+  const w = r.w * 0.8;
+  const usable = w - 0.16;
+  const perLine = Math.floor(usable * 130 / 6.5);
+  const lines = Math.max(1, Math.ceil(text.length / perLine));
+  const h = lines * (8.5 / 72) + 0.09;
+  const x = side === "out" ? r.x + r.w - w - 0.09 : r.x + 0.09;
+  s.addShape(pres.ShapeType.roundRect, {
+    x, y, w, h, fill: { color: tone }, line: { width: 0 }, rectRadius: 0.07
+  });
+  s.addText(text, {
+    x: x + 0.08, y: y + 0.045, w: usable, h: h - 0.09,
+    fontFace: B, fontSize: 6.5, color: ink, valign: "top", margin: 0, lineSpacing: 8.5
+  });
+  return y + h + 0.06;
+}
+
 /* One horizontal slice of a pyramid, cut from a triangle of base PW and
    height PH so the sloped edges of adjacent tiers line up exactly.
    Index 0 is the apex, which is a triangle rather than a trapezoid. */
@@ -308,41 +366,62 @@ function pyramidTier(s, cx, py, PW, PH, i, n, color) {
   eyebrow(s, "Who this is for", false);
   title(s, "No two associates are chasing the same thing, so one reward for everyone reaches almost no one.", false);
 
-  const cw = (W - 0.6) / 3;
-  function motive(i, tag, line, tone) {
-    const x = M + (cw + 0.3) * i;
-    card(s, x, 2.16, cw, 1.5, SURFACE, 0.12);
-    s.addShape(pres.ShapeType.rect, {
-      x, y: 2.16, w: cw, h: 0.055, fill: { color: tone }, line: { width: 0 }
-    });
-    s.addText(tag.toUpperCase(), {
-      x: x + 0.22, y: 2.34, w: cw - 0.44, h: 0.3,
-      fontFace: B, fontSize: 10.5, bold: true, charSpacing: 1.2,
-      color: tone, valign: "middle", margin: 0
-    });
-    s.addText(line, {
-      x: x + 0.22, y: 2.68, w: cw - 0.44, h: 0.88,
-      fontFace: B, fontSize: 13, color: INK, valign: "top", margin: 0, lineSpacing: 17
-    });
-  }
-  motive(0, "Security", "Paying rent this month. Cash is the only signal that lands.", "1E4E6B");
-  motive(1, "Recognition", "Wants to be good at this, and wants someone to notice they are.", "35604A");
-  motive(2, "Time back", "Wants the day to stop being a slog. An hour off beats a gift card.", "8A5A11");
+  /* Two official photographs: the ordinary shift, and the milestone.
+     Widths are derived from each file's own aspect ratio so neither
+     one is stretched. */
+  const ph = 2.42;
+  const p1w = ph * (739 / 415);
+  const p2w = ph * (447 / 447);
+  const assets = path.join(__dirname, "..", "docs", "doc-assets");
 
-  card(s, M, 3.96, W, 1.72, SURFACE, 0.12);
+  s.addImage({ path: path.join(assets, "wm-2ppl-car-up-fetching.jpeg"), x: M, y: 2.12, w: p1w, h: ph });
+  s.addImage({ path: path.join(assets, "wm-promotion.jpeg"), x: M + p1w + 0.18, y: 2.12, w: p2w, h: ph });
+
+  s.addText("Most of the job, most of the time.", {
+    x: M, y: 4.6, w: p1w, h: 0.28,
+    fontFace: B, fontSize: 11, italic: true, color: MUTED, valign: "middle", margin: 0
+  });
+  s.addText("Some days look like this.", {
+    x: M + p1w + 0.18, y: 4.6, w: p2w, h: 0.28,
+    fontFace: B, fontSize: 11, italic: true, color: MUTED, valign: "middle", margin: 0
+  });
+
+  /* Right column: what each of them is actually chasing. */
+  const rx3 = M + p1w + 0.18 + p2w + 0.4;
+  const rw3 = W - (rx3 - M);
+  s.addText("Same store, same shift, different reasons for being there:", {
+    x: rx3, y: 2.12, w: rw3, h: 0.5,
+    fontFace: B, fontSize: 13, bold: true, color: NAVY, valign: "top", margin: 0, lineSpacing: 17
+  });
+  [
+    ["Security", "Rent is due this month. Cash is the only signal that lands.", "1E4E6B"],
+    ["Recognition", "Wants to be good at this, and wants someone to notice.", "35604A"],
+    ["Time back", "Wants the day to stop being a slog. An hour off beats a gift card.", "8A5A11"]
+  ].forEach((m, i) => {
+    const y = 2.74 + i * 0.66;
+    s.addShape(pres.ShapeType.rect, {
+      x: rx3, y: y + 0.03, w: 0.045, h: 0.58, fill: { color: m[2] }, line: { width: 0 }
+    });
+    s.addText(m[0].toUpperCase(), {
+      x: rx3 + 0.18, y, w: rw3 - 0.18, h: 0.22,
+      fontFace: B, fontSize: 10, bold: true, charSpacing: 1.2, color: m[2], valign: "middle", margin: 0
+    });
+    s.addText(m[1], {
+      x: rx3 + 0.18, y: y + 0.24, w: rw3 - 0.18, h: 0.38,
+      fontFace: B, fontSize: 12, color: INK, valign: "top", margin: 0, lineSpacing: 15
+    });
+  });
+
+  card(s, M, 5.02, W, 1.42, SURFACE, 0.12);
   s.addShape(pres.ShapeType.rect, {
-    x: M, y: 3.96, w: 0.055, h: 1.72, fill: { color: AMBER }, line: { width: 0 }
+    x: M, y: 5.02, w: 0.055, h: 1.42, fill: { color: AMBER }, line: { width: 0 }
   });
   s.addText("I worked two summers at Meijer. It was boring, and I got good at wasting time. Nobody was measuring whether I was engaged, so I wasn't. My store was in a safe area. Plenty of associates do not get that. The difference between a job that empties you and one that gives something back is mostly whether the place notices you are in it.", {
-    x: M + 0.34, y: 4.12, w: W - 0.68, h: 1.42,
-    fontFace: B, fontSize: 14, color: INK, valign: "top", margin: 0, lineSpacing: 21
+    x: M + 0.34, y: 5.14, w: W - 0.68, h: 1.2,
+    fontFace: B, fontSize: 13.5, color: INK, valign: "top", margin: 0, lineSpacing: 20
   });
 
-  s.addText("So Sidekick should not average associates. It should learn what each cohort responds to, and give them that.", {
-    x: M, y: 5.94, w: W, h: 0.55,
-    fontFace: B, fontSize: 14.5, bold: true, color: NAVY, valign: "middle", margin: 0
-  });
-  footNote(s, "Three motives, not three personas. No invented biographies. Each maps to one of the reward types on the next slide.", false);
+  footNote(s, "Official Walmart photography. The quote on the wall behind the promotion is this deck's thesis, already stated. What is missing is anything that measures whether we deliver it.", false);
   pageNum(s, false);
   s.addNotes("Say this once and move on. Variation between associates is not noise to be averaged away, it is the thing worth designing for. The Meijer note is here because it is more useful evidence about disengagement than a survey, and because it makes the argument something I have lived rather than modelled.");
 }
@@ -641,46 +720,184 @@ function pyramidTier(s, cx, py, PW, PH, i, n, color) {
   title(s, 'Day 1 stops being "nobody told me anything."', false);
 
   const cw2 = (W - 0.75) / 4;
+  const PWID = 1.52;                    // phone width
+  const PTOP = 2.08;
   const moments = [
-    { tag: "Proactive", time: "Day 1  ·  6:55am", head: "The app speaks first",
-      body: "First shift today, Maya. Badge and locker first, then meet Dee, your buddy, aisle 12. I will guide each step when you arrive.", tone: TEAL, soft: TEAL_SOFT, ink: "1E4E6B" },
-    { tag: "Conversational", time: "Shift 1", head: "Zero-tenure vocabulary",
-      body: "“What's a zone?”  Your assigned section for the night. Yours is GM-3, aisles 10 to 14. Dee walks the first pass with you.", tone: NAVY_3, soft: SURFACE_2, ink: NAVY },
-    { tag: "Reward", time: "Week 1", head: "Real reward, her choice",
-      body: "Five shifts, all trainings done. Pick one: $15 gift card, free lunch, 5 stock-sweepstake entries, or $15 to a cause you choose.", tone: AMBER, soft: AMBER_SOFT, ink: "8A5A11" },
-    { tag: "Growth path", time: "Day 30", head: "A visible road",
-      body: "Day-30 check-in tomorrow. Day 60 cross-training choice. Day 90 milestone and path picker. Two recovery days a week held.", tone: GREEN, soft: GREEN_SOFT, ink: "2E5540" }
+    { tag: "Proactive", time: "Day 1  ·  6:55am", head: "The app speaks first", tone: TEAL, ink: "1E4E6B" },
+    { tag: "Conversational", time: "Shift 1", head: "Zero-tenure vocabulary", tone: NAVY_3, ink: NAVY },
+    { tag: "Reward", time: "Week 1", head: "Real reward, her choice", tone: AMBER, ink: "8A5A11" },
+    { tag: "Growth path", time: "Day 30", head: "A visible road", tone: GREEN, ink: "2E5540" }
   ];
 
   moments.forEach((m, i) => {
-    const x = M + i * (cw2 + 0.25);
-    card(s, x, 2.1, cw2, 3.2, m.soft, 0.12);
+    const cx0 = M + i * (cw2 + 0.25);
+    const px = cx0 + (cw2 - PWID) / 2;
+    const r = phoneFrame(s, px, PTOP, PWID);
+
+    if (i === 0) {
+      /* Lock screen: the app speaks before she does. */
+      statusBar(s, r, "6:55");
+      s.addText("Monday", {
+        x: r.x, y: r.y + 0.24, w: r.w, h: 0.16,
+        fontFace: B, fontSize: 6, color: MUTED, align: "center", valign: "middle", margin: 0
+      });
+      s.addText("6:55", {
+        x: r.x, y: r.y + 0.4, w: r.w, h: 0.46,
+        fontFace: H, fontSize: 27, bold: true, color: INK, align: "center", valign: "middle", margin: 0
+      });
+      s.addShape(pres.ShapeType.roundRect, {
+        x: r.x + 0.08, y: r.y + 0.98, w: r.w - 0.16, h: 0.92,
+        fill: { color: SURFACE }, line: { color: SURFACE_2, width: 0.75 }, rectRadius: 0.07
+      });
+      s.addShape(pres.ShapeType.roundRect, {
+        x: r.x + 0.15, y: r.y + 1.05, w: 0.13, h: 0.13,
+        fill: { color: m.tone }, line: { width: 0 }, rectRadius: 0.03
+      });
+      s.addText("Sidekick  ·  now", {
+        x: r.x + 0.32, y: r.y + 1.04, w: r.w - 0.42, h: 0.15,
+        fontFace: B, fontSize: 5.5, bold: true, color: MUTED, valign: "middle", margin: 0
+      });
+      s.addText("First shift today, Maya. Badge and locker first, then meet Dee, your buddy, aisle 12. I will guide each step when you arrive.", {
+        x: r.x + 0.15, y: r.y + 1.24, w: r.w - 0.3, h: 0.62,
+        fontFace: B, fontSize: 6.5, color: INK, valign: "top", margin: 0, lineSpacing: 8.5
+      });
+    }
+
+    if (i === 1) {
+      /* Chat: she asks in her own words, it answers in hers. */
+      statusBar(s, r, "21:14");
+      s.addShape(pres.ShapeType.rect, {
+        x: r.x, y: r.y + 0.2, w: r.w, h: 0.24, fill: { color: m.tone }, line: { width: 0 }
+      });
+      s.addText("Sidekick", {
+        x: r.x + 0.1, y: r.y + 0.2, w: r.w - 0.2, h: 0.24,
+        fontFace: B, fontSize: 6.5, bold: true, color: WHITE, valign: "middle", margin: 0
+      });
+      let cy = r.y + 0.52;
+      cy = bubble(s, r, cy, "What's a zone?", "out", SURFACE_2, INK);
+      cy = bubble(s, r, cy, "Your section for tonight is GM-3, aisles 10 to 14.", "in", TEAL_SOFT, "1E4E6B");
+      cy = bubble(s, r, cy, "Dee walks the first pass with you. Want me to ping her?", "in", TEAL_SOFT, "1E4E6B");
+      cy = bubble(s, r, cy, "Yes please", "out", SURFACE_2, INK);
+      cy = bubble(s, r, cy, "Done. She will meet you at the time clock.", "in", TEAL_SOFT, "1E4E6B");
+      s.addShape(pres.ShapeType.roundRect, {
+        x: r.x + 0.09, y: r.y + r.h - 0.36, w: r.w - 0.18, h: 0.2,
+        fill: { color: SURFACE }, line: { color: SURFACE_2, width: 0.75 }, rectRadius: 0.1
+      });
+      s.addText("Ask anything", {
+        x: r.x + 0.16, y: r.y + r.h - 0.36, w: r.w - 0.3, h: 0.2,
+        fontFace: B, fontSize: 5.5, italic: true, color: MUTED, valign: "middle", margin: 0
+      });
+    }
+
+    if (i === 2) {
+      /* Reward picker: she chooses, and the choice is the signal. */
+      statusBar(s, r, "18:02");
+      s.addShape(pres.ShapeType.rect, {
+        x: r.x, y: r.y + 0.2, w: r.w, h: 0.24, fill: { color: m.tone }, line: { width: 0 }
+      });
+      s.addText("You earned a pick", {
+        x: r.x + 0.1, y: r.y + 0.2, w: r.w - 0.2, h: 0.24,
+        fontFace: B, fontSize: 6.5, bold: true, color: WHITE, valign: "middle", margin: 0
+      });
+      s.addText("5 shifts. All trainings done.", {
+        x: r.x + 0.1, y: r.y + 0.5, w: r.w - 0.2, h: 0.16,
+        fontFace: B, fontSize: 6, color: MUTED, valign: "middle", margin: 0
+      });
+      ["$15 gift card", "Free lunch on shift", "5 stock-sweepstake entries", "$15 to a cause you pick"]
+        .forEach((opt, k) => {
+          const oy = r.y + 0.72 + k * 0.34;
+          s.addShape(pres.ShapeType.roundRect, {
+            x: r.x + 0.09, y: oy, w: r.w - 0.18, h: 0.28,
+            fill: { color: k === 0 ? AMBER_SOFT : SURFACE },
+            line: { color: k === 0 ? AMBER : SURFACE_2, width: k === 0 ? 1 : 0.75 },
+            rectRadius: 0.06
+          });
+          s.addShape(pres.ShapeType.ellipse, {
+            x: r.x + 0.17, y: oy + 0.095, w: 0.09, h: 0.09,
+            fill: { color: k === 0 ? AMBER : WHITE },
+            line: { color: k === 0 ? AMBER : "C6CFDD", width: 0.75 }
+          });
+          s.addText(opt, {
+            x: r.x + 0.31, y: oy, w: r.w - 0.4, h: 0.28,
+            fontFace: B, fontSize: 6, color: INK, valign: "middle", margin: 0
+          });
+        });
+      s.addShape(pres.ShapeType.roundRect, {
+        x: r.x + 0.09, y: r.y + r.h - 0.42, w: r.w - 0.18, h: 0.26,
+        fill: { color: m.tone }, line: { width: 0 }, rectRadius: 0.06
+      });
+      s.addText("Claim it", {
+        x: r.x + 0.09, y: r.y + r.h - 0.42, w: r.w - 0.18, h: 0.26,
+        fontFace: B, fontSize: 6.5, bold: true, color: WHITE, align: "center", valign: "middle", margin: 0
+      });
+    }
+
+    if (i === 3) {
+      /* The road ahead, with recovery days already held. */
+      statusBar(s, r, "07:30");
+      s.addShape(pres.ShapeType.rect, {
+        x: r.x, y: r.y + 0.2, w: r.w, h: 0.24, fill: { color: m.tone }, line: { width: 0 }
+      });
+      s.addText("Your road", {
+        x: r.x + 0.1, y: r.y + 0.2, w: r.w - 0.2, h: 0.24,
+        fontFace: B, fontSize: 6.5, bold: true, color: WHITE, valign: "middle", margin: 0
+      });
+      [
+        ["Day 30", "Check-in tomorrow", true],
+        ["Day 60", "Cross-training choice", false],
+        ["Day 90", "Milestone and path picker", false]
+      ].forEach((st, k) => {
+        const oy = r.y + 0.56 + k * 0.5;
+        if (k < 2) {
+          s.addShape(pres.ShapeType.rect, {
+            x: r.x + 0.185, y: oy + 0.14, w: 0.022, h: 0.42,
+            fill: { color: SURFACE_2 }, line: { width: 0 }
+          });
+        }
+        s.addShape(pres.ShapeType.ellipse, {
+          x: r.x + 0.15, y: oy, w: 0.13, h: 0.13,
+          fill: { color: st[2] ? m.tone : WHITE },
+          line: { color: st[2] ? m.tone : "C6CFDD", width: 1 }
+        });
+        s.addText(st[0], {
+          x: r.x + 0.33, y: oy - 0.025, w: r.w - 0.42, h: 0.16,
+          fontFace: B, fontSize: 6.5, bold: true, color: st[2] ? m.ink : INK, valign: "middle", margin: 0
+        });
+        s.addText(st[1], {
+          x: r.x + 0.33, y: oy + 0.14, w: r.w - 0.42, h: 0.22,
+          fontFace: B, fontSize: 5.5, color: MUTED, valign: "top", margin: 0, lineSpacing: 7
+        });
+      });
+      s.addShape(pres.ShapeType.roundRect, {
+        x: r.x + 0.09, y: r.y + r.h - 0.62, w: r.w - 0.18, h: 0.46,
+        fill: { color: GREEN_SOFT }, line: { width: 0 }, rectRadius: 0.06
+      });
+      s.addText("Two recovery days a week are held for you. Skipping a training costs you nothing.", {
+        x: r.x + 0.16, y: r.y + r.h - 0.59, w: r.w - 0.32, h: 0.4,
+        fontFace: B, fontSize: 5.5, color: "2E5540", valign: "top", margin: 0, lineSpacing: 7
+      });
+    }
+
+    /* Caption under each phone */
+    const capY = PTOP + PWID / 0.485 + 0.14;
     s.addShape(pres.ShapeType.roundRect, {
-      x: x + 0.18, y: 2.3, w: 1.42, h: 0.3, fill: { color: m.tone }, line: { color: m.tone, width: 0 }, rectRadius: 0.15
+      x: cx0, y: capY, w: 1.42, h: 0.28, fill: { color: m.tone }, line: { width: 0 }, rectRadius: 0.14
     });
     s.addText(m.tag, {
-      x: x + 0.18, y: 2.3, w: 1.42, h: 0.3,
-      fontFace: B, fontSize: 9.5, bold: true, color: WHITE, align: "center", valign: "middle", margin: 0
+      x: cx0, y: capY, w: 1.42, h: 0.28,
+      fontFace: B, fontSize: 9, bold: true, color: WHITE, align: "center", valign: "middle", margin: 0
     });
     s.addText(m.time, {
-      x: x + 0.18, y: 2.72, w: cw2 - 0.36, h: 0.28,
-      fontFace: B, fontSize: 10.5, bold: true, color: MUTED, valign: "middle", margin: 0
+      x: cx0 + 1.5, y: capY, w: cw2 - 1.5, h: 0.28,
+      fontFace: B, fontSize: 9, bold: true, color: MUTED, valign: "middle", margin: 0
     });
     s.addText(m.head, {
-      x: x + 0.18, y: 3.02, w: cw2 - 0.36, h: 0.66,
-      fontFace: H, fontSize: 15.5, bold: true, color: m.ink, valign: "top", margin: 0, lineSpacing: 19
-    });
-    s.addText(m.body, {
-      x: x + 0.18, y: 3.72, w: cw2 - 0.36, h: 1.4,
-      fontFace: B, fontSize: 12, color: INK, valign: "top", margin: 0, lineSpacing: 16
+      x: cx0, y: capY + 0.32, w: cw2, h: 0.4,
+      fontFace: H, fontSize: 14, bold: true, color: m.ink, valign: "top", margin: 0, lineSpacing: 17
     });
   });
 
-  s.addText("Four surfaces, one associate. Every plan in this deck is drawn the same way, so the room compares experiences and not adjectives.", {
-    x: M, y: 5.62, w: W, h: 0.5,
-    fontFace: B, fontSize: 13, color: INK, valign: "middle", margin: 0
-  });
-  footNote(s, "Illustrative dialogue, drafted to show intent. Not shipped UX copy.", false);
+  footNote(s, "Illustrative mockups, drafted to show intent. Not shipped UX copy. Four surfaces, one associate, so the room compares experiences and not adjectives.", false);
   pageNum(s, false);
   s.addNotes("Maya is a day-3 overnight stocker. Skipping a training never costs her anything, which is what makes it safe to learn. The week-1 reward is chosen by her, and that choice is also the training signal Plan C learns from.");
 }
