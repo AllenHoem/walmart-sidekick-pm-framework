@@ -2,7 +2,9 @@
 
 Rebuilt from source (`data.js`, `index.html`), not from the existing site narrative. Structure follows `docs/executive-presentation-playbook.md`: point of view and outcome on slide 1, 10 slides to the decision, unlimited appendix, every headline a full-sentence claim.
 
-Slide 1 leads with the thesis and what it is worth, not with the calendar. The playbook rule is that a reader with 60 seconds gets the recommendation, the cost, and the risk. "Approve 2 weeks" satisfied the letter of that and failed the intent: it opened on a resource request with no argument attached, so the room had to wait four slides to learn what it was buying. The recommendation still carries numbers on slide 1 ($15M per point, $30M to $45M at target, day-90 gate). The formal ask, with amount, owner, date, and fallback, stays on slide 10 where a decision slide belongs.
+Slides 1 and 2 carry vision, approach, and outcome in that order, and neither one asks for time. The playbook rule is that a reader with 60 seconds gets the recommendation, the cost, and the risk. "Approve 2 weeks, 20 pilot stores, 1 DS pod" satisfied the letter of that and failed the intent: it opened on a resource request with no argument attached, so the room waited four slides to learn what it was buying.
+
+Slide 1 is now the equation and one number that prices it. Slide 2 is the approach, tier by tier, with a 90-day build order on each. The formal ask, with amount, owner, date, and fallback, stays on slide 10 where a decision slide belongs. A room that has read slides 1 and 2 already knows what the two weeks buy by the time the ask appears.
 
 ## Audience and running order
 
@@ -12,7 +14,7 @@ Every number below is an order-of-magnitude model with stated assumptions, built
 
 ## Layout archetypes
 
-Nine repeating layouts. Each slide below names the one it uses.
+Ten repeating layouts. Each slide below names the one it uses.
 
 ```
 L1 CLAIM + PROOF TILES        L2 SPLIT: VISUAL | CLAIMS      L3 OPTIONS TABLE
@@ -49,92 +51,119 @@ L7 RISK REGISTER              L8 DECISION ASK                +------------------
                               | kill criteria: ...        |
                               +---------------------------+
 
-L9 VALUE LADDER + ENTRY POINTS
+L9 VALUE LADDER + BUILD ORDER PER TIER
 +------------------------------------------------------------------+
 | HEADLINE CLAIM                                                   |
 |                /\        +------------------------------------+  |
-|   hard        /  \       | TIER 3 NAME                        |  |
-|   to copy    /____\      | what it means / first move         |  |
-|             /      \     +------------------------------------+  |
-|   differ-  /________\    | TIER 2 NAME                        |  |
-|   entiated/          \   | what it means / first move         |  |
-|          /____________\  +------------------------------------+  |
-|   table /              \ | TIER 1 NAME                        |  |
-|   stakes/______________\ | what it means / first move         |  |
+|   hard        /  \       | TIER 3 NAME             [tag]      |  |
+|   to copy    /____\      | what it means, one line            |  |
+|             /      \     | d1-30 | d31-60 | d61-90            |  |
+|   differ-  /________\    | depends on: ...                    |  |
+|   entiated/          \   +------------------------------------+  |
+|          /____________\  | TIER 2 NAME             [tag]      |  |
+|   table /              \ | ... same four rows ...             |  |
+|   stakes/______________\ +------------------------------------+  |
+|                          | TIER 1 NAME             [tag]      |  |
+|                          | ... same four rows ...             |  |
 |                          +------------------------------------+  |
 | where we start, and what the top tier has to be earned with      |
++------------------------------------------------------------------+
+
+L10 HERO EQUATION
++------------------------------------------------------------------+
+|                                                                  |
+|        TERM A        +        TERM B                             |
+|      gloss line            gloss line                            |
+|                                                                  |
+|                      =                                           |
+|                                                                  |
+|        TERM C        +        TERM D                             |
+|      gloss line            gloss line                            |
+|                                                                  |
+|   one number that prices the right-hand side                     |
 +------------------------------------------------------------------+
 ```
 
 ## Main path: 10 slides to a decision
 
-### Slide 1. Rejuvenation and rewards drive retention and results
+### Slide 1. Rewards plus rejuvenation equals retention plus results
 
-Layout L1 with the equation strip above the proof tiles. Opens on the vision and what it is worth. The calendar ask is one supporting line, not the headline: the room is being asked to back an approach and an outcome, and the two weeks are only what it costs to start.
+Layout L10. The equation is the slide. No stat tiles, no approach line, no calendar. One number underneath prices the right-hand side, and everything else waits for slide 2.
 
 ```
 +------------------------------------------------------------------+
-| Rejuvenation and rewards drive retention and results.            |
 |                                                                  |
-|  +--------------+   +--------------+      +-------------------+  |
-|  | REJUVENATION | + |   REWARDS    |  ->  | RETENTION         |  |
-|  | rest that is |   | real currency|      | past 90 days and  |  |
-|  | scheduled,   |   | for drive.   |  +   | past 5 years      |  |
-|  | not begged   |   | The associate|      | RESULTS           |  |
-|  | for          |   | picks it     |      | staffed shifts,   |  |
-|  +--------------+   +--------------+      | full floor        |  |
-|                                           +-------------------+  |
-|   +-------------+  +-------------+  +-------------+              |
-|   |   ~$15M     |  |  $30-45M    |  |   Day 90    |              |
-|   | a year per  |  | a year if   |  | scale or    |              |
-|   | retention pt|  | we land 2-3 |  | kill, preset|              |
-|   +-------------+  +-------------+  +-------------+              |
 |                                                                  |
-| Start where the loss is: the first 90 days, 20 matched stores,   |
-| 2 weeks to pick the entry point. Evidence decides what scales.   |
-+------------------------------------------------------------------+
-```
-
-The headline is the point of view, not a feature list. The three tiles carry the outcome: what a point of retention is worth, what the pilot targets, and when the room gets to stop paying. The closing line carries approach and ask together so the calendar never reads as the request itself.
-
-Assumption line visible: about 500K new store hires a year, about $3,000 to replace each one, illustrative until the sprint replaces both.
-
-### Slide 2. Answers are table stakes. Rejuvenation and rewards are where retention is won
-
-Layout L9. Expands the equation from slide 1 into three tiers of what an associate actually gets, and names the first move on each. This is the strategy slide: it shows what the thesis means in practice and where the work starts.
-
-```
-+------------------------------------------------------------------+
-| Answers are table stakes. Rejuvenation and rewards win retention.|
+|         REWARDS            +          REJUVENATION               |
+|      real currency for            rest that is scheduled,        |
+|      drive. They pick it.         not begged for                 |
 |                                                                  |
-|              /\          +-------------------------------------+ |
-|   hard      /  \         | REWARDS THE ASSOCIATE PICKS         | |
-|   to copy  / rw \        | Real currency for driven, proactive | |
-|           /______\       | work. Reaches payroll, not a badge. | |
-|          /        \      | First move: reward catalog v1, HR   | |
-|   diff- /  rejuv-  \     | and legal cleared, tested as an arm.| |
-|  erenti/   enation  \    +-------------------------------------+ |
-|   ated/______________\   | REJUVENATION ON THE SCHEDULE        | |
-|      /                \  | Rest that is scheduled, not begged  | |
-| table/    answers      \ | for. Safe to fail. Safe at work.    | |
-| stak/__________________\ | First move: own the first 90 days   | |
-|                          | in 20 matched stores.               | |
-|                          +-------------------------------------+ |
-|                          | ANSWERS THAT FINISH THE JOB         | |
-|                          | Ask once, the task completes. No    | |
-|                          | "go ask your team lead."            | |
-|                          | First move: cluster 3M questions,   | |
-|                          | ship one agent that closes the loop.| |
-|                          +-------------------------------------+ |
-| Base and middle start together. The top tier is earned with the  |
-| cohort data those two produce, which is why C follows A, not the |
-| other way round.                                                 |
+|                            =                                     |
+|                                                                  |
+|        RETENTION           +            RESULTS                  |
+|      past 90 days and             staffed shifts,                |
+|      past 5 years                 a full floor                   |
+|                                                                  |
+|                                                                  |
+|   Every point of 90-day retention is worth about $15M a year.    |
 +------------------------------------------------------------------+
 ```
 
-Why the tiers sit in this order. The base is where Sidekick lives today and where every large employer is already investing, so it buys parity and retains no one on its own. The middle needs to know where each new hire sits in their first 90 days, which most employers do not track, so it is defensible. The top needs the right reward per cohort, which needs the Signal Engine underneath it, so it is the tier a competitor cannot copy by shipping a feature.
+Set full-bleed navy, terms at roughly 30pt, glosses at 13pt, the operators large enough to read as an equation rather than punctuation. Inputs on the top row, outputs on the bottom, the equals sign between them on its own line. A single horizontal line would run too wide to scan at this type size.
 
-This slide is also the honest answer to "why not just do rewards first." Rewards without the signal layer is a gift card lottery. The ladder states the dependency instead of hiding it.
+Term order is Rewards first, matching how the thesis was stated to me. The site reads "Rejuvenation and rewards" in its h1. That ordering stays on the site; the deck leads with Rewards.
+
+Nothing else competes. The old opener put five elements on this slide and the eye had nowhere to land. One claim, one number, one footnote.
+
+Assumption footnote: about 500K new store hires a year, about $3,000 to replace each one, illustrative until the sprint replaces both.
+
+### Slide 2. Each tier is earned by the one below, so the base and middle start together
+
+Layout L9. Turns the equation into three tiers of what an associate gets, and gives each tier a 90-day build order and the thing it depends on. This is the approach slide.
+
+```
++------------------------------------------------------------------+
+| Each tier is earned by the one below, so base and middle start   |
+| together.                                                        |
+|                                                                  |
+|            /\      +-------------------------------------------+ |
+|   hard    /  \     | REWARDS THE ASSOCIATE PICKS  [hard to copy]| |
+|   to copy/ rw \    | Real currency for initiative, paid through | |
+|         /______\   | payroll. The associate chooses it.         | |
+|        /        \  | d1-30 inventory signals, fit score v0      | |
+|  diff-/  rejuven- \| d31-60 catalog v1, HR and legal cleared    | |
+| erent/    ation    | d61-90 bandit across 3 to 4 arms           | |
+|  ated/____________\| Depends on: cohort scores the tiers below  | |
+|     /              | produce. Without them this is a lottery.   | |
+|    /    answers    +-------------------------------------------+ |
+|   /                | REJUVENATION ON THE SCHEDULE [differentia-]| |
+|  /                 | Rest that is scheduled, not begged for.    | |
+| /__________________| Safe to fail and learn. Safe at work.      | |
+|  table stakes      | d1-30 map the first-90 journey, pick 20    | |
+|                    | matched store pairs                        | |
+|                    | d31-60 check-ins fire at day 7, 30, 60     | |
+|                    | d61-90 read lift against control stores    | |
+|                    | Depends on: knowing where each new hire    | |
+|                    | sits in their first 90 days                 | |
+|                    +-------------------------------------------+ |
+|                    | ANSWERS THAT FINISH THE JOB [table stakes] | |
+|                    | Ask once and the task completes. No "go    | |
+|                    | ask your team lead."                       | |
+|                    | d1-30 cluster 3M questions by intent       | |
+|                    | d31-60 one agent closes one loop end to end| |
+|                    | d61-90 deflection measured, cluster 2 spec | |
+|                    | Depends on: write access to systems of     | |
+|                    | record, and the accuracy bar that guards it | |
+|                    +-------------------------------------------+ |
+| Rewards last is a sequencing decision, not a priority call.      |
++------------------------------------------------------------------+
+```
+
+Why the tiers sit in this order. The base is where Sidekick lives today and where every large employer is already investing, so it buys parity and retains no one on its own. The middle needs to know where each new hire sits in their first 90 days, which most employers do not track, so it is defensible. The top needs the right reward per cohort, which needs the Signal Engine underneath it, so a competitor cannot copy it by shipping a feature.
+
+This is also the honest answer to "why not do rewards first." Rewards without the signal layer is a gift card lottery. The ladder states the dependency instead of hiding it.
+
+How this differs from slide 6. Slide 2 sequences the three tiers at one phrase per phase to show the approach. Slide 6 sequences the three bets in detail and carries the day-90 scale-or-kill gate. Slide 2 answers "how would you go about this," slide 6 answers "what exactly happens and when do we get to stop."
 
 ### Slide 3. Replacement spend runs about $1.5B a year, and the losses concentrate in weeks 1 to 6
 
@@ -363,7 +392,7 @@ Three numbers are placeholders in the source and need your real figures, or they
 
 ## Changes from the existing site narrative
 
-- Point of view and outcome open slide 1, with the equation the site buries in frame 5. Slide 2 turns that equation into a three-tier value ladder with the first move named on each tier, which the site does not do anywhere.
+- The equation opens slide 1 as the whole slide. The site buries it in frame 5 as a line of prose. Slide 2 turns it into a three-tier value ladder with a 90-day build order and a stated dependency on each tier, which the site does not do anywhere.
 - Do-nothing is priced at about $1.5B a year and named as the option to kill. The site never prices inaction.
 - Risks get owners, trip wires, and mitigations in one table. The site scatters them per plan.
 - Scale and kill criteria are numeric and pre-registered on the decision slide.
